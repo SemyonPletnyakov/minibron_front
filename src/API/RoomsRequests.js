@@ -33,5 +33,34 @@ export default class RoomsRequests{
         console.log(response.data)
         return response.data;
     }
-    
+    static async updateRoom(_room, _jwt){
+        const response = await axios.put(ServerLink.link + '/Rooms', _room,
+        {
+            headers: {
+            Authorization: _jwt,
+          }
+        });
+        console.log(response.data)
+        return response.data;
+    }
+    static async updateRoomPicturesData(_picturesData, _jwt){
+        const response = await axios.put(ServerLink.link + '/Pictures/SetData', _picturesData,
+        {
+            headers: {
+            Authorization: _jwt,
+          }
+        });
+        console.log(response.data)
+        return response.data;
+    }
+    static async createPictures(_masPictures, _roomId, _jwt){
+        const response = await axios.post(ServerLink.link + '/Pictures/SomeImages?roomId='+_roomId, _masPictures,
+        {
+            headers: {
+            Authorization: _jwt,
+          }
+        });
+        console.log(response.data)
+        return response.data;
+    }
 }

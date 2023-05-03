@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import globalHotelId from '..';
 import RoomsRequests from '../API/RoomsRequests';
 
 const AdminRoomFullCard = ({room}) => {
+    const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+    
     const[imageData, setImageData] = useState([]);
     const[imageOldData, setImageOldData] = useState([]);
 
@@ -11,6 +14,7 @@ const AdminRoomFullCard = ({room}) => {
     const[capacity, setCapacity] = useState(room.capacity);
     const[price, setPrice] = useState(room.price);
     const [_roomId, setRoomId] = useState(room.id);
+    const [newFiles, setNewFiles] = useState([])
     
     async function loadImageData(){      
         const response = await RoomsRequests.getRoomPicturesData(room.id);
@@ -66,7 +70,7 @@ const AdminRoomFullCard = ({room}) => {
                 [...imageData,{
                 id:0,
                 roomId:_roomId,
-                name:fileReader.result,
+                name:e.target.files[0].name,
                 numberOnTheList: isNaN(imageData[imageData.length-1]?.numberOnTheList)? 1 :imageData[imageData.length-1]?.numberOnTheList+1 ,
                 added:true,
                 url:fileReader.result
@@ -75,16 +79,44 @@ const AdminRoomFullCard = ({room}) => {
                 [{
                     id:0,
                     roomId:_roomId,
-                    name:fileReader.result,
+                    name:e.target.files[0].name,
                     numberOnTheList:1,
                     added:true,
                     url:fileReader.result
                 }]
             )
+            console.log(fileReader.result)
+            console.log(e.target.files[0])
+            setNewFiles([...newFiles,e.target.files[0]])
         }
 
         SortImageData();
     }
+    async function submitOnClick(e){
+        if(room!==null){
+            const response = await RoomsRequests.updateRoom({
+                id:room.id,
+                title:title,
+                description:description,
+                capacity:capacity,
+                price:price,
+                pictureName:imageData[0]?.name
+            },cookies?.token);
+            if(response){
+                await RoomsRequests.updateRoomPicturesData(imageData.map(item=>({
+                    id:item.id,
+                    roomId:_roomId,
+                    name: item.name,
+                    numberOnTheList:item.numberOnTheList
+                })),cookies?.token);
+                //await RoomsRequests.createPictures(imageData.filter(item=>item.added).map(item=>(item.url)),_roomId,cookies?.token)
+                await RoomsRequests.createPictures(newFiles,_roomId,cookies?.token)
+            }
+        }
+
+
+    }
+
 
     return (
         <div>
@@ -120,15 +152,15 @@ const AdminRoomFullCard = ({room}) => {
                 ) }
             </table>
             <span>Добавить изображение</span>
-            <input type="file" name="myImg" onChange={onChangeIputImage}></input>
+            <input type="file" onChange={onChangeIputImage}></input>
             <span>Описание</span>
-            <input value={room.description} onChange={(e)=>setDescription(e.target.value)}></input>
+            <input value={description} onChange={(e)=>setDescription(e.target.value)}></input>
             <span>Вместимость/число коек</span>
-            <input value={room.capacity} onChange={(e)=>setCapacity(e.target.value)} type="number"></input>
+            <input value={capacity} onChange={(e)=>setCapacity(e.target.value)} type="number"></input>
             <span>Цена</span>
-            <input value={room.price} onChange={(e)=>setPrice(e.target.value)} type="number"></input>
+            <input value={price} onChange={(e)=>setPrice(e.target.value)} type="number"></input>
 
-            <button>{(room!=null)?'Подтвердить изменения':'Создать'}</button>
+            <button onClick={submitOnClick}>{(room!=null)?'Подтвердить изменения':'Создать'}</button>
 
         </div>
     );
