@@ -11,7 +11,6 @@ export default class RoomsRequests{
                 hotelId: _hotelId,
             }
         })
-        console.log(response.data)
         return response.data;
     }
     static async getRoomPicturesData(_roomId){
@@ -24,6 +23,15 @@ export default class RoomsRequests{
     }
     static getPictureLink(_hotelId,_roomId,_name){
         return ServerLink.link + '/Pictures?hotelId=' + _hotelId + '&roomId='+ _roomId+'&name='+_name
+    }
+    static async getAllRooms(_jwt){
+        const response = await axios.get(ServerLink.link + '/Rooms/GetAll', {
+            headers: {
+            Authorization: _jwt,
+          }
+        });
+        console.log(response.data)
+        return response.data;
     }
     
 }

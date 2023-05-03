@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import Login from './components/Login';
 import { useCookies } from "react-cookie";
 import AccountRequests from './API/AccountRequests';
+import AdminMenu from './components/AdminMenu';
+import AdminComponentsEnum from './Common/AdminComponentsEnum';
+import AdminRoomMenu from './components/AdminRoomMenu';
 
 const AppAdmin = () => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
@@ -9,6 +12,7 @@ const AppAdmin = () => {
     const [jwt, setJwt] = useState("");
     const [role, setRole] = useState("");
     const [fio, setFio] = useState("");
+    const [activeComponent, setActiveComponent] = useState(0);
     
     const setUserData = (_fio, _role, _jwt)=>{
         //setCookie("token", "Bearer "+ _jwt, { path: "/" });
@@ -45,14 +49,11 @@ const AppAdmin = () => {
             }
             {isLogged&&
                 <button onClick={exitButtonOnClick}>Выйти</button>
-
-
-
-
-
-
-
-
+                
+            }
+            <AdminMenu setActiveComponent={setActiveComponent} role={role}/>
+            {activeComponent== AdminComponentsEnum.RoomsMenu&&
+                <AdminRoomMenu />
             }
         </div>
     );
