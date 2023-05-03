@@ -37,11 +37,6 @@ const Login = ({setUserData, removeUserData}) => {
         }
     }
 
-    async function exitButtonOnClick  (e){
-        e.preventDefault();
-        removeUserData();
-    }
-
     return (
         <div>
             <span>Логин</span>
@@ -52,7 +47,6 @@ const Login = ({setUserData, removeUserData}) => {
             {failLogin&&
                 <span style={{color:"red"}}>Неверный логин или пароль</span>
             }
-            <button onClick={exitButtonOnClick}>Выйти</button>
         </div>
     );
 };
