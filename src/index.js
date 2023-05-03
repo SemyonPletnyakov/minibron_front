@@ -1,17 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import AppAdmin from './AppAdmin';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+//const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById(document.querySelector('[id^="hotelId="]').id));
+const globalHotelId = +(document.querySelector('[id^="hotelId="]').id.substring(8));
+
 root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const root2 = ReactDOM.createRoot(document.getElementById(document.querySelector('[id^="adminHotelId="]').id));
+export const adminGlobalHotelId = +(document.querySelector('[id^="adminHotelId="]').id.substring(13));
+console.log(adminGlobalHotelId);
+root2.render(
+  <React.StrictMode>
+    <AppAdmin />
+  </React.StrictMode>
+);
+
+export default globalHotelId;
+
+
