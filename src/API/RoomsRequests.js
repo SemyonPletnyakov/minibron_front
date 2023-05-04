@@ -30,19 +30,43 @@ export default class RoomsRequests{
             Authorization: _jwt,
           }
         });
-        console.log(response.data)
+        return response.data;
+    }
+    static async createRoom(_room, _jwt){
+        const response = await axios.post(ServerLink.link + '/Rooms', _room,
+        {
+            headers: {
+            Authorization: _jwt,
+          }
+        });
         return response.data;
     }
     static async updateRoom(_room, _jwt){
+        
         const response = await axios.put(ServerLink.link + '/Rooms', _room,
         {
             headers: {
             Authorization: _jwt,
           }
         });
-        console.log(response.data)
         return response.data;
     }
+    static async deleteRoom(_room, _jwt){
+        console.log(_room)
+        console.log(_jwt)
+        const response = await axios.delete(ServerLink.link + '/Rooms', 
+        {
+            headers: {
+            Authorization: _jwt,
+          },
+          data:_room
+        });
+        return response.data;
+    }
+
+
+
+
     static async updateRoomPicturesData(_picturesData, _jwt){
         const response = await axios.put(ServerLink.link + '/Pictures/SetData', _picturesData,
         {
@@ -50,17 +74,29 @@ export default class RoomsRequests{
             Authorization: _jwt,
           }
         });
-        console.log(response.data)
         return response.data;
     }
     static async createPictures(_masPictures, _roomId, _jwt){
+        //console.log('Хедеры')
+        //console.log(_masPictures.getHeaders())
+
         const response = await axios.post(ServerLink.link + '/Pictures/SomeImages?roomId='+_roomId, _masPictures,
         {
             headers: {
             Authorization: _jwt,
+            'Accept': '*/*',
+            "Content-Type": "multipart/form-data",
+            //..._masPictures.getHeaders()
           }
         });
-        console.log(response.data)
+        /*const response = await fetch(ServerLink.link + '/Pictures/SomeImages?roomId='+_roomId,
+        { 
+            method: "POST",
+            body: _masPictures,
+        });*/
+        
+        //console.log(response.request)
+        //console.log(response.request.headers)
         return response.data;
     }
 }

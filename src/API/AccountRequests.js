@@ -12,5 +12,12 @@ export default class AccountRequests{
         });
         return response;
     }
-    
+    static async getAccInfo(_jwt){
+        const response = await axios.get(ServerLink.link + '/Account', {
+            headers: {
+            Authorization: _jwt,
+          }
+        });
+        return response.data;
+    }
 }

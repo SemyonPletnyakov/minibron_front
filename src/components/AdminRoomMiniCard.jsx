@@ -2,7 +2,7 @@ import React from 'react';
 import { adminGlobalHotelId } from '..';
 import RoomsRequests from '../API/RoomsRequests';
 
-const AdminRoomMiniCard = ({room, setSelectedRoom}) => {
+const AdminRoomMiniCard = ({room, setSelectedRoom, role}) => {
     function clickOnRoom (e){
         e.preventDefault();
         console.log(room.id)
@@ -15,7 +15,7 @@ const AdminRoomMiniCard = ({room, setSelectedRoom}) => {
                 <div>{room.title}</div>
                 <div className='room_minicard_low_block'>
                     <div>Цена: {room.price}р</div>
-                    <button className='button_common' onClick={clickOnRoom}>Изменить</button>
+                    {role=='admin'&&<button className='button_common' onClick={clickOnRoom}>Изменить</button>}
                 </div>
             </div>
         </div>

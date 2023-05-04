@@ -3,21 +3,21 @@ import { useCookies } from 'react-cookie';
 import globalHotelId from '..';
 import RoomsRequests from '../API/RoomsRequests';
 
-const AdminRoomFullCard = ({room}) => {
+const AdminRoomFullCard = ({room, isCreate, setIsCreate, setSelectedRoom}) => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
     
     const[imageData, setImageData] = useState([]);
     const[imageOldData, setImageOldData] = useState([]);
 
-    const[title, setTitle] = useState(room.title);
-    const[description, setDescription] = useState(room.description);
-    const[capacity, setCapacity] = useState(room.capacity);
-    const[price, setPrice] = useState(room.price);
-    const [_roomId, setRoomId] = useState(room.id);
+    const[title, setTitle] = useState(!isCreate && room!=null? room.title: "");
+    const[description, setDescription] = useState(!isCreate&& room!=null? room.description:"");
+    const[capacity, setCapacity] = useState(!isCreate&& room!=null? room.capacity: 0);
+    const[price, setPrice] = useState(!isCreate&& room!=null? room.price: 0);
+    const [_roomId, setRoomId] = useState(!isCreate&& room!=null? room.id : 0);
     const [newFiles, setNewFiles] = useState([])
     
     async function loadImageData(){      
-        const response = await RoomsRequests.getRoomPicturesData(room.id);
+        const response = await RoomsRequests.getRoomPicturesData(_roomId);
         let t1 = response.sort( (a, b) => a.numberOnTheList - b.numberOnTheList ).map((item)=>(
             {
                 id:item.id,
@@ -25,7 +25,7 @@ const AdminRoomFullCard = ({room}) => {
                 name:item.name,
                 numberOnTheList:item.numberOnTheList,
                 added:false,
-                url:RoomsRequests.getPictureLink(globalHotelId,room.id,item.name)
+                url:RoomsRequests.getPictureLink(globalHotelId,_roomId,item.name)
             }))
         let t2 = response.sort( (a, b) => a.numberOnTheList - b.numberOnTheList ).map((item)=>(
             {
@@ -34,7 +34,7 @@ const AdminRoomFullCard = ({room}) => {
                 name:item.name,
                 numberOnTheList:item.numberOnTheList,
                 added:false,
-                url:RoomsRequests.getPictureLink(globalHotelId,room.id,item.name)
+                url:RoomsRequests.getPictureLink(globalHotelId,_roomId,item.name)
             }))
         console.log(t1)
         setImageData(t1);
@@ -42,6 +42,7 @@ const AdminRoomFullCard = ({room}) => {
     }
 
     useEffect(()=>{
+        if(!isCreate)
         loadImageData()
     },[])
 
@@ -85,8 +86,6 @@ const AdminRoomFullCard = ({room}) => {
                     url:fileReader.result
                 }]
             )
-            console.log(fileReader.result)
-            console.log(e.target.files[0])
             setNewFiles([...newFiles,e.target.files[0]])
         }
 
@@ -94,29 +93,82 @@ const AdminRoomFullCard = ({room}) => {
     }
     async function submitOnClick(e){
         if(room!==null){
-            const response = await RoomsRequests.updateRoom({
-                id:room.id,
-                title:title,
-                description:description,
-                capacity:capacity,
-                price:price,
-                pictureName:imageData[0]?.name
-            },cookies?.token);
-            if(response){
-                await RoomsRequests.updateRoomPicturesData(imageData.map(item=>({
-                    id:item.id,
-                    roomId:_roomId,
-                    name: item.name,
-                    numberOnTheList:item.numberOnTheList
-                })),cookies?.token);
-                //await RoomsRequests.createPictures(imageData.filter(item=>item.added).map(item=>(item.url)),_roomId,cookies?.token)
-                await RoomsRequests.createPictures(newFiles,_roomId,cookies?.token)
+            let response;
+            if(!isCreate){
+                response = await RoomsRequests.updateRoom({
+                    id:_roomId,
+                    title:title,
+                    description:description,
+                    capacity:capacity,
+                    price:price,
+                    pictureName:imageData[0]?.name
+                },cookies?.token);
+                if(response){
+                    await RoomsRequests.updateRoomPicturesData(imageData.map(item=>({
+                        id:item.id,
+                        roomId:_roomId,
+                        name: item.name,
+                        numberOnTheList:item.numberOnTheList
+                    })),cookies?.token);
+                    //await RoomsRequests.createPictures(imageData.filter(item=>item.added).map(item=>(item.url)),_roomId,cookies?.token)
+                    const formData = new FormData();
+                    /*newFiles.forEach(function(item, index, array) {
+                        formData.append(item.name, item);
+                      });*/
+                      console.log(newFiles);
+                      for (let i = 0; i < newFiles.length; i++) {
+                        formData.append("images", newFiles[i]);
+                      }
+                      for (var key of formData.entries()) {
+                        console.log(key[0] + ', ' + key[1]);
+                        }
+                      //console.log(formData.entries());
+                      //console.log(formData.getHeaders())
+                    await RoomsRequests.createPictures(formData,_roomId,cookies?.token)
+                }
             }
+            else{
+                response = await RoomsRequests.createRoom({
+                    title:title,
+                    description:description,
+                    capacity:capacity,
+                    price:price,
+                    pictureName:imageData[0]?.name
+                },cookies?.token);
+                if(response){
+                    await RoomsRequests.updateRoomPicturesData(imageData.map(item=>({
+                        id:item.id,
+                        roomId:response,
+                        name: item.name,
+                        numberOnTheList:item.numberOnTheList
+                    })),cookies?.token);
+
+                    const formData = new FormData();
+                      console.log(newFiles);
+                      for (let i = 0; i < newFiles.length; i++) {
+                        formData.append("images", newFiles[i]);
+                      }
+                      for (var key of formData.entries()) {
+                        console.log(key[0] + ', ' + key[1]);
+                        }
+                    await RoomsRequests.createPictures(formData,response,cookies?.token)
+                    setIsCreate(false);
+                    setRoomId(response);
+                    setSelectedRoom(response);
+                }
+            }
+
+            
         }
 
 
     }
-
+    async function onClickDeleteButton(e){
+        await RoomsRequests.deleteRoom({id:_roomId},cookies?.token);
+        setIsCreate(false);
+        setSelectedRoom(0);
+    }
+    
 
     return (
         <div>
@@ -127,7 +179,7 @@ const AdminRoomFullCard = ({room}) => {
                 {imageData.map((image, i, arr)=>
                     <tr key={i+"some_string"}>
                         <th>
-                            <img style={{height:"200px"}} src={image.url}></img>
+                            <img style={{height:"200px"}} src={image.url} alt={image.name}></img>
                         </th>
                         <th>
                             {(i!==0)&& <button onClick={e=>{
@@ -161,6 +213,8 @@ const AdminRoomFullCard = ({room}) => {
             <input value={price} onChange={(e)=>setPrice(e.target.value)} type="number"></input>
 
             <button onClick={submitOnClick}>{(room!=null)?'Подтвердить изменения':'Создать'}</button>
+            {setIsCreate&& <button onClick={onClickDeleteButton}>Удалить</button>}
+            <button onClick={e=>{setIsCreate(false); setSelectedRoom(0)}}>Отмена</button>
 
         </div>
     );

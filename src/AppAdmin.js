@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Login from './components/Login';
 import { useCookies } from "react-cookie";
 import AccountRequests from './API/AccountRequests';
@@ -13,7 +13,22 @@ const AppAdmin = () => {
     const [role, setRole] = useState("");
     const [fio, setFio] = useState("");
     const [activeComponent, setActiveComponent] = useState(0);
-    
+    useEffect(()=>{
+        loadAccData();
+    },[])
+    async function loadAccData(){
+        const response = await AccountRequests.getAccInfo(cookies?.token);
+        if(response!=null){
+            console.log(response)
+            let _jwt = cookies?.token;
+            setUserData(response.fio,response.role,_jwt)
+        }
+        else{
+            removeUserData()
+        }
+    }
+
+
     const setUserData = (_fio, _role, _jwt)=>{
         //setCookie("token", "Bearer "+ _jwt, { path: "/" });
         setJwt(_jwt);
@@ -44,16 +59,17 @@ const AppAdmin = () => {
 
     return (
         <div>
-            {!false&&
+            {!isLogged&&
                 <Login  setUserData={setUserData} removeUserData={removeUserData} />
             }
             {isLogged&&
-                <button onClick={exitButtonOnClick}>Выйти</button>
-                
-            }
-            <AdminMenu setActiveComponent={setActiveComponent} role={role}/>
-            {activeComponent== AdminComponentsEnum.RoomsMenu&&
-                <AdminRoomMenu />
+            <div>    
+                    <button onClick={exitButtonOnClick}>Выйти</button>
+                    <AdminMenu setActiveComponent={setActiveComponent} role={role}/>
+                    {activeComponent== AdminComponentsEnum.RoomsMenu&&
+                        <AdminRoomMenu role={role}/>
+                    }
+            </div>
             }
         </div>
     );
