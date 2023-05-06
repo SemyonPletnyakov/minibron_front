@@ -28,7 +28,7 @@ const Login = ({setUserData, removeUserData}) => {
 
         if (result?.status == 200 && result?.data?.jwtToken !=null )
         {
-            setUserData(result.data.fio, result.data.role, result.data.jwtToken);
+            setUserData(result.data.fio, result.data.role,login ,result.data.jwtToken);
             setCookie("token", "Bearer "+ result.data.jwtToken, { path: "/" });
             setFailLogin(false);
         } else {

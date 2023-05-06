@@ -59,7 +59,7 @@ const BookingForUser = ({selectedRoom, selectedService, startDate, endDate, goTo
                         </tr>
                     )
                 }
-                <tr><td style={{textAlign:'left'}}><b>Итого:</b></td><td style={{textAlign:'right'}}>{selectedRoom.price+selectedService.reduce((sum,current)=>sum+current.price,0)}р</td></tr>
+                <tr><td style={{textAlign:'left'}}><b>Итого:</b></td><td style={{textAlign:'right'}}>{selectedRoom.price*diffDates()+selectedService.reduce((sum,current)=>sum+current.price,0)}р</td></tr>
             </table>
             <div>ФИО</div>
             <input onChange={fioInputChange}></input>

@@ -5,7 +5,6 @@ import RoomsRequests from '../API/RoomsRequests';
 const AdminRoomMiniCard = ({room, setSelectedRoom, role}) => {
     function clickOnRoom (e){
         e.preventDefault();
-        console.log(room.id)
         setSelectedRoom(room.id)
     }
     return (

@@ -5,6 +5,11 @@ import AccountRequests from './API/AccountRequests';
 import AdminMenu from './components/AdminMenu';
 import AdminComponentsEnum from './Common/AdminComponentsEnum';
 import AdminRoomMenu from './components/AdminRoomMenu';
+import AdminServicesMenu from './components/AdminServicesMenu';
+import AdminBookingMenu from './components/AdminBookingMenu';
+import SessionMenu from './components/SessionMenu';
+import AccountsMenu from './components/AccountsMenu';
+import YourAccount from './components/YourAccount';
 
 const AppAdmin = () => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
@@ -12,6 +17,7 @@ const AppAdmin = () => {
     const [jwt, setJwt] = useState("");
     const [role, setRole] = useState("");
     const [fio, setFio] = useState("");
+    const [login, setLogin] = useState("");
     const [activeComponent, setActiveComponent] = useState(0);
     useEffect(()=>{
         loadAccData();
@@ -21,7 +27,7 @@ const AppAdmin = () => {
         if(response!=null){
             console.log(response)
             let _jwt = cookies?.token;
-            setUserData(response.fio,response.role,_jwt)
+            setUserData(response.fio,response.role,response.login ,_jwt)
         }
         else{
             removeUserData()
@@ -29,10 +35,11 @@ const AppAdmin = () => {
     }
 
 
-    const setUserData = (_fio, _role, _jwt)=>{
+    const setUserData = (_fio, _role, _login,_jwt)=>{
         //setCookie("token", "Bearer "+ _jwt, { path: "/" });
         setJwt(_jwt);
         setFio(_fio);
+        setLogin(_login);
         setRole(_role);
         setIsLogged(true);
     }
@@ -46,6 +53,7 @@ const AppAdmin = () => {
         
         setJwt("");
         setFio("");
+        setLogin("");
         setRole("");
         removeCookie("token", { path: "/" });
         setIsLogged(false);
@@ -64,11 +72,26 @@ const AppAdmin = () => {
             }
             {isLogged&&
             <div>    
-                    <button onClick={exitButtonOnClick}>Выйти</button>
-                    <AdminMenu setActiveComponent={setActiveComponent} role={role}/>
-                    {activeComponent== AdminComponentsEnum.RoomsMenu&&
-                        <AdminRoomMenu role={role}/>
-                    }
+                <button onClick={exitButtonOnClick}>Выйти</button>
+                <AdminMenu setActiveComponent={setActiveComponent} role={role}/>
+                {activeComponent== AdminComponentsEnum.RoomsMenu&&
+                    <AdminRoomMenu role={role}/>
+                }
+                {activeComponent== AdminComponentsEnum.ServicesMenu&&
+                    <AdminServicesMenu role={role}/>
+                }
+                {activeComponent== AdminComponentsEnum.BookingsMenu&&
+                    <AdminBookingMenu role={role}/>
+                }
+                {activeComponent== AdminComponentsEnum.SessionsMenu&&
+                    <SessionMenu role={role}/>
+                }
+                {activeComponent == AdminComponentsEnum.AccountsMenu&&
+                    <AccountsMenu role={role}/>
+                }
+                {activeComponent == AdminComponentsEnum.YourAccountsMenu&&
+                    <YourAccount role={role} fio={fio} login={login} />
+                }
             </div>
             }
         </div>

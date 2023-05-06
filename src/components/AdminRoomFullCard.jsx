@@ -213,7 +213,7 @@ const AdminRoomFullCard = ({room, isCreate, setIsCreate, setSelectedRoom}) => {
             <input value={price} onChange={(e)=>setPrice(e.target.value)} type="number"></input>
 
             <button onClick={submitOnClick}>{(room!=null)?'Подтвердить изменения':'Создать'}</button>
-            {setIsCreate&& <button onClick={onClickDeleteButton}>Удалить</button>}
+            {!isCreate&& <button onClick={onClickDeleteButton}>Удалить</button>}
             <button onClick={e=>{setIsCreate(false); setSelectedRoom(0)}}>Отмена</button>
 
         </div>
