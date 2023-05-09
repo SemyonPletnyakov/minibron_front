@@ -10,6 +10,7 @@ import AdminBookingMenu from './components/AdminBookingMenu';
 import SessionMenu from './components/SessionMenu';
 import AccountsMenu from './components/AccountsMenu';
 import YourAccount from './components/YourAccount';
+import './styles/main.css';
 
 const AppAdmin = () => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
@@ -71,9 +72,8 @@ const AppAdmin = () => {
                 <Login  setUserData={setUserData} removeUserData={removeUserData} />
             }
             {isLogged&&
-            <div>    
-                <button onClick={exitButtonOnClick}>Выйти</button>
-                <AdminMenu setActiveComponent={setActiveComponent} role={role}/>
+            <div className='admin_page'>   
+                <AdminMenu exitButtonOnClick={exitButtonOnClick} setActiveComponent={setActiveComponent} role={role}/>
                 {activeComponent== AdminComponentsEnum.RoomsMenu&&
                     <AdminRoomMenu role={role}/>
                 }

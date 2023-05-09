@@ -25,9 +25,10 @@ const RoomFullCard = ({room, backToRoomsMenu, goToServices}) => {
         backToRoomsMenu();
     }
     return (
-        <div>
-            <button onClick={clickOnBackButton}>Назад</button>
-            <div>{room.title}</div>
+        <div className='room_fullcard'>
+            <div className="button_back_left">
+                <button className='button_common' onClick={clickOnBackButton}>Назад</button>
+            </div>
             {(images!=0)&&
                 <SimpleImageSlider
                     width={896}
@@ -38,15 +39,16 @@ const RoomFullCard = ({room, backToRoomsMenu, goToServices}) => {
                 />
             
             }
-            <div>
-                <div>
+            <div className='room_fullcard_body'>
+                <div className='room_fullcard_descriprtion'>
                     <div>Описание:</div>
                     <div>{room.description}</div>
                 </div>
-                <div>
-                    <div>Вместимость/число коек: {room.capacity}</div>
-                    <div>Цена в день: {room.price}р</div>
-                    <button onClick={clickOnBookingButton}>Забронировать номер</button>
+                <div className='room_fullcard_main'>
+                    <div className='margin_bottom'>{room.title}</div>
+                    <div className='margin_bottom'>Вместимость/число коек: {room.capacity}</div>
+                    <div className='margin_bottom'>Цена в день: {room.price}р</div>
+                    <div><button className='button_common' onClick={clickOnBookingButton}>Забронировать номер</button></div>
                 </div>
             </div>
         </div>

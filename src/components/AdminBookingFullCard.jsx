@@ -41,7 +41,7 @@ const AdminBookingFullCard = ({booking,isCreate,setIsCreate,setSelectedBooking})
         const serviceResult = await ServicesRequests.getAll(globalHotelId);
         setServicesData(serviceResult.map(x=>(
             {
-                d:x.id, 
+                id:x.id, 
                 oldId: booking?.servicesForBookings.find(y=>y.additionalServiceId==x.id)?.id ?? 0,
                 title: x.title, 
                 price: x.price, 
@@ -51,7 +51,7 @@ const AdminBookingFullCard = ({booking,isCreate,setIsCreate,setSelectedBooking})
         const roomResult = await RoomsRequests.getAllRooms(cookies?.token);
         setRoomData(roomResult);
         if(typeof roomResult.filter(x=>x.id==roomId) != "undefined")
-            setMainRoom(roomResult.filter(x=>x.id==roomId) ?? mainRoom);
+            setMainRoom(roomResult.find(x=>x.id==roomId) ?? mainRoom);
     }
 
     async function submitOnClick(e){
@@ -69,11 +69,10 @@ const AdminBookingFullCard = ({booking,isCreate,setIsCreate,setSelectedBooking})
             },cookies?.token);
             if(response){
                 for (let i = 0; i < servicesData.length; i++) {
-                    console.log(servicesData[i].oldId>0);
                     if(servicesData[i].oldId>0 && !servicesData[i].action)
                         BookingsRequests.deleteBookingServiceById({id:servicesData[i].oldId}, cookies?.token);
                     if(servicesData[i].oldId==0 && servicesData[i].action)
-                        BookingsRequests.newBookingService(servicesData[i].id, bookingId, globalHotelId);
+                        await BookingsRequests.newBookingService(servicesData[i].id, bookingId, globalHotelId);
                 }
                
             }
@@ -83,7 +82,6 @@ const AdminBookingFullCard = ({booking,isCreate,setIsCreate,setSelectedBooking})
                                 moment(startDateTime, 'DD.MM.YYYY').format('YYYY-MM-DD'),
                                 moment(endDateTime, 'DD.MM.YYYY').format('YYYY-MM-DD'),
                                 mainRoom.capacity,globalHotelId);
-                                console.log(dateCheck.find(x=>x.id==roomId))
             if(!dateCheck.find(x=>x.id==roomId) || (typeof dateCheck.find(x=>x.id==roomId) == "undefined")){
                 setDateError(true);
             }
@@ -95,7 +93,7 @@ const AdminBookingFullCard = ({booking,isCreate,setIsCreate,setSelectedBooking})
                 if(response>0){
                     for (let i = 0; i < servicesData.length; i++) {
                         if(servicesData[i].oldId==0 && servicesData[i].action)
-                            BookingsRequests.newBookingService(servicesData[i].id, response, globalHotelId);
+                            await BookingsRequests.newBookingService(servicesData[i].id, response, globalHotelId);
                     }
                     setDateError(false);
                     setBookingId(response);
@@ -154,88 +152,99 @@ const AdminBookingFullCard = ({booking,isCreate,setIsCreate,setSelectedBooking})
     //-----------конец-----------
 
     return (
-        <div>
-            <div>
-                <div>
-                    {(!changedRoom && mainRoom.id!=0) &&
-                            <div>
-                                <span>Текущий номер: {mainRoom.title} Вместимость:{mainRoom.capacity} Цена в день:{mainRoom.price}р</span>
-                                <button onClick={e=>setChenagedRoom(true)}>Сменить номер</button> 
-                            </div>}
-                    {(mainRoom.id==0)&&
-                        <button onClick={e=>setChenagedRoom(true)}>Выбрать номер</button>
-                    }
-                    {(changedRoom)&&
-                        <div>
-                            <button onClick={e=>setChenagedRoom(false)}>Скрыть номера</button> 
-                            <table>
-                                {roomData.map(room=>
-                                    <tr>
-                                        <td style={{textAlign:'left'}}>{room.title}</td>
-                                        <td style={{textAlign:'left'}}>  Вместимость: {room.capacity}</td>
-                                        <td style={{textAlign:'left'}}>  Цена в день: {room.price}р  </td>
-                                        <td style={{textAlign:'left'}}>{(room.id != roomId)?
-                                            <button onClick={e=>
-                                                {
-                                                    setRoomId(room.id); 
-                                                    setMainRoom(room);
-                                                }}>Переместить в</button>
-                                            :"Выбрано"}</td>
-                                    </tr>
-                                )}
-                            </table>
-                        </div>
-                    }
+        <div className='admin_room_menu'>
+            <div className='margin_bottom'>
+                {(!changedRoom && mainRoom.id!=0) &&
+                        <div className='center_column'>
+                            <span className='margin_bottom'>Текущий номер: {mainRoom.title}</span>
+                            <span className='margin_bottom'> Вместимость: {mainRoom.capacity}</span>
+                            <span className='margin_bottom'>Цена в день: {mainRoom.price}р</span>
+                            <button className="button_common" onClick={e=>setChenagedRoom(true)}>Сменить номер</button> 
+                        </div>}
+                {(mainRoom.id==0 && !changedRoom)&&
+                    <button className="button_add" onClick={e=>setChenagedRoom(true)}>Выбрать номер</button>
+                }
+                {(changedRoom)&&
+                    <div>
+                        <button className="button_common" onClick={e=>setChenagedRoom(false)}>Скрыть номера</button> 
+                        <table>
+                            {roomData.map(room=>
+                                <tr>
+                                    <td style={{textAlign:'left'}}>{room.title}</td>
+                                    <td style={{textAlign:'left'}}>  Вместимость: {room.capacity}</td>
+                                    <td style={{textAlign:'left'}}>  Цена в день: {room.price}р  </td>
+                                    <td style={{textAlign:'left'}}>{(room.id != roomId)?
+                                        <button className="button_common" onClick={e=>
+                                            {
+                                                setRoomId(room.id); 
+                                                setMainRoom(room);
+                                            }}>Переместить в</button>
+                                        :<div className='button_add'>Выбрано</div>}</td>
+                                </tr>
+                            )}
+                        </table>
+                    </div>
+                }
+            </div>
+            <div className='center_column'>
+                <div className='margin_bottom'>
+                        <span> Дата начала:</span>
+                        <input
+                            placeholder="Заезд"
+                            value={startDateTime}
+                            onChange={handleStartChange}
+                            className="text-field__input"
+                        />
                 </div>
-                <div>
-                    Дата начала:
-                    <input
-                        placeholder="Заезд"
-                        value={startDateTime}
-                        onChange={handleStartChange}
-                        className="text-field__input"
-                    />
-                    Дата конца: 
+                <div>   
+                    <span>Дата конца:</span>
                     <input
                         placeholder="Выезд"
                         value={endDateTime}
                         onChange={handleEndChange}
                         className="text-field__input"
                     />
-                    <DayPicker locale={ru}
-                        mode="range"
-                        selected={selectedRange}
-                        onSelect={handleRangeSelect}                        
-                    />
                 </div>
-                <div>
-                    <div>Данные клиента</div>
-                    <div>ФИО</div>
-                    <input onChange={e=>setFio(e.target.value)} value={fio}></input>
-                    <div>E-mail</div>
-                    <input onChange={e=>setEmail(e.target.value)} value={email}></input>
-                    <div>Мобильный телефон</div>
-                    <input onChange={e=>setPhone(e.target.value)} value={phone}></input>
-                </div>
-                <div>
-                    {(serviceUpdate || !serviceUpdate)&&
-                    <table>
-                        {servicesData.map(service=>
-                            <tr>
-                                <td style={{textAlign:'left'}}>{service.title}</td>
-                                <td style={{textAlign:'left'}}>  Цена: {service.price}р  </td>
-                                <td style={{textAlign:'left'}}>{(service.action)?
-                                    <button onClick={e=>{service.action=false; setServiceUpdate(!serviceUpdate)}}>Удалить</button>:
-                                    <button onClick={e=>{service.action=true; setServiceUpdate(!serviceUpdate)}}>Добавить</button>}
-                                </td>
-                            </tr>
-                        )}
-                    </table>}
-                </div>
-                {dateError&& <div>Комната в это время уже забронирована или занята!</div>}
-                <button onClick={submitOnClick}>{(booking!=null)?'Подтвердить изменения':'Создать'}</button>
-                {!isCreate&& <button onClick={onClickDeleteButton}>Удалить</button>}
-                <button onClick={e=>{setIsCreate(false); setSelectedBooking(0)}}>Отмена</button>
+                <DayPicker locale={ru}
+                    mode="range"
+                    selected={selectedRange}
+                    onSelect={handleRangeSelect}                        
+                />
+            </div>
+            <div className='margin_bottom'><b>Данные клиента</b></div>
+            <div className='margin_bottom'>
+                <div>ФИО</div>
+                <input className="text-field__input" onChange={e=>setFio(e.target.value)} value={fio}></input>
+            </div>
+            <div className='margin_bottom'>
+                <div>E-mail</div>
+                <input className="text-field__input" onChange={e=>setEmail(e.target.value)} value={email}></input>
+            </div>
+            <div className='margin_bottom'>
+                <div>Мобильный телефон</div>
+                <input className="text-field__input" onChange={e=>setPhone(e.target.value)} value={phone}></input>
+            </div>
+            <div className='margin_bottom'><b>Дополнительные услуги</b></div>
+            <div className='margin_bottom'>
+                {(serviceUpdate || !serviceUpdate)&&
+                <table>
+                    {servicesData.map(service=>
+                        <tr>
+                            <td style={{textAlign:'left'}}>{service.title}</td>
+                            <td style={{textAlign:'left'}}>  Цена: {service.price}р  </td>
+                            <td style={{textAlign:'left'}}>{(service.action)?
+                                <button className='button_delete' onClick={e=>{service.action=false; setServiceUpdate(!serviceUpdate)}}>Удалить</button>:
+                                <button className='button_add' onClick={e=>{service.action=true; setServiceUpdate(!serviceUpdate)}}>Добавить</button>}
+                            </td>
+                        </tr>
+                    )}
+                </table>}
+            </div>
+            <div className='row_button'>
+                {dateError&& <div className='error_massege'>Комната в это время уже забронирована или занята!</div>}
+                <button className="button_add" onClick={submitOnClick}>{(booking!=null)?'Подтвердить изменения':'Создать'}</button>
+                {!isCreate&& <button className="button_delete" onClick={onClickDeleteButton}>Удалить</button>}
+                <button className="button_common" onClick={e=>{setIsCreate(false); setSelectedBooking(0)}}>Отмена</button>
             </div>
         </div>
     );

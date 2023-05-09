@@ -23,8 +23,8 @@ const AdminRoomMenu = ({role}) => {
     return (
         <div>
             {(selectedRoom==0&&!isCreate)?
-                (<div>
-                    <button onClick={e=>setIsCreate(true)}>Добавить</button>
+                (<div className='admin_room_menu'>
+                    <button className='button_add' onClick={e=>setIsCreate(true)}>Добавить</button>
                     {roomData.map(room=>
                         <AdminRoomMiniCard room={room} setSelectedRoom={setSelectedRoom} role={role}/>
                     )}

@@ -8,14 +8,15 @@ const AdminRoomMiniCard = ({room, setSelectedRoom, role}) => {
         setSelectedRoom(room.id)
     }
     return (
-        <div className='room_minicard'>
-            <img className='img_room_minicard' src={RoomsRequests.getPictureLink(adminGlobalHotelId,room.id,room.pictureName)} alt="Картинка номера"/>
-            <div>
-                <div>{room.title}</div>
-                <div className='room_minicard_low_block'>
-                    <div>Цена: {room.price}р</div>
-                    {role=='admin'&&<button className='button_common' onClick={clickOnRoom}>Изменить</button>}
-                </div>
+        <div className='admin_room_card'>
+            <img className='service_img' src={RoomsRequests.getPictureLink(adminGlobalHotelId,room.id,room.pictureName)} alt="Картинка номера"/>
+            <div className='service_main'>
+                <div className='margin_bottom'>{room.title}</div>
+                <div className='margin_bottom'>{room.description}</div>
+                <div className='margin_bottom'>Вместимость: {room.capacity}</div>
+                <div className='margin_bottom'>Цена: {room.price}р</div>
+                {role=='admin'&&<button className='button_common' onClick={clickOnRoom}>Изменить</button>}
+                
             </div>
         </div>
     );

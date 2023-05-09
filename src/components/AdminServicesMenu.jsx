@@ -25,8 +25,8 @@ const AdminServicesMenu = ({role}) => {
     return (
         <div>
             {(selectedService==0&&!isCreate)?
-                (<div>
-                    <button onClick={e=>setIsCreate(true)}>Добавить</button>
+                (<div className='admin_room_menu'>
+                    <button className='button_add' onClick={e=>setIsCreate(true)}>Добавить</button>
                     {serviceData.map(service=>
                         <AdminServicesMiniCard service={service} setSelectedService={setSelectedService} role={role}/>
                     )}

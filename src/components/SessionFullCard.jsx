@@ -56,6 +56,7 @@ const SessionFullCard = ({session,isCreate,setIsCreate,setSelectedSession}) => {
             {
                 id:x.id, 
                 title: x.title, 
+                capacity: x.capacity,
                 price: ((session?.actualPriceForRoom!=null)&&(x.id==roomId)) ? session?.actualPriceForRoom : x.price
             }))
             console.log(sortedRoomResult)
@@ -204,28 +205,29 @@ const SessionFullCard = ({session,isCreate,setIsCreate,setSelectedSession}) => {
 
 
     return (
-        <div>
-            <div>
-                <div>
+        <div className='admin_room_menu'>
+                <div className='margin_bottom'>
                     {(!changedRoom && mainRoom.id!=0) &&
-                            <div>
-                                <div>Текущий номер: {mainRoom.title} 
-                                    Вместимость:{mainRoom.capacity} 
-                                    Цена в день:
+                            <div className='center_column'>
+                                <span className='margin_bottom'>Текущий номер: {mainRoom.title} </span>
+                                <span className='margin_bottom'>Вместимость: {mainRoom.capacity} </span>
+                                <div className='margin_bottom'>
+                                    <span>Цена в день</span>
                                     <input 
+                                        className="text-field__input"
                                         type="number"
                                         defaultValue={mainRoom.price} 
                                         onChange={e=>{setRoomPrice(+e.target.value); mainRoom.price=+e.target.value}}>
                                     </input> 
                                 </div>
-                                <button onClick={e=>setChenagedRoom(true)}>Сменить номер</button> 
+                                <button className="button_common" onClick={e=>setChenagedRoom(true)}>Сменить номер</button> 
                             </div>}
-                    {(mainRoom.id==0)&&
-                        <button onClick={e=>setChenagedRoom(true)}>Выбрать номер</button>
+                    {(mainRoom.id==0 && !changedRoom)&&
+                        <button className="button_add" onClick={e=>setChenagedRoom(true)}>Выбрать номер</button>
                     }
                     {(changedRoom)&&
                         <div>
-                            <button onClick={e=>setChenagedRoom(false)}>Скрыть номера</button> 
+                            <button className="button_common" onClick={e=>setChenagedRoom(false)}>Скрыть номера</button> 
                             <table>
                                 {roomData.map(room=>
                                     <tr>
@@ -236,6 +238,7 @@ const SessionFullCard = ({session,isCreate,setIsCreate,setSelectedSession}) => {
                                             {room.id != roomId? 
                                                 room.price :
                                                 <input 
+                                                    className="text-field__input"
                                                     type="number"
                                                     defaultValue={room.price} 
                                                     onChange={e=>{room.price=+e.target.value}}>
@@ -243,49 +246,58 @@ const SessionFullCard = ({session,isCreate,setIsCreate,setSelectedSession}) => {
                                             }
                                         </td>
                                         <td style={{textAlign:'left'}}>{(room.id != roomId)?
-                                            <button onClick={e=>
+                                            <button className="button_common" onClick={e=>
                                                 {
                                                     setRoomId(room.id); 
                                                     setMainRoom(room);
                                                 }}>Переместить в</button>
-                                            :"Выбрано"}</td>
+                                            :<div className='button_add'>Выбрано</div>}</td>
                                     </tr>
                                 )}
                             </table>
                         </div>
                     }
                 </div>
-                <div>
-                    Дата начала:
-                    <input
-                        placeholder="Заезд"
-                        value={startDateTime}
-                        onChange={handleStartChange}
-                        className="text-field__input"
-                    />
-                    Дата конца: 
-                    <input
-                        placeholder="Выезд"
-                        value={endDateTime}
-                        onChange={handleEndChange}
-                        className="text-field__input"
-                    />
+                <div className='center_column'>
+                    <div className='margin_bottom'>
+                        <span> Дата начала:</span>
+                        <input
+                            placeholder="Заезд"
+                            value={startDateTime}
+                            onChange={handleStartChange}
+                            className="text-field__input"
+                        />
+                    </div>
+                    <div>
+                        <span>Дата конца:</span>
+                        <input
+                            placeholder="Выезд"
+                            value={endDateTime}
+                            onChange={handleEndChange}
+                            className="text-field__input"
+                        />
+                    </div>
                     <DayPicker locale={ru}
                         mode="range"
                         selected={selectedRange}
                         onSelect={handleRangeSelect}                        
                     />
                 </div>
-                <div>
-                    <div>Данные клиента</div>
+                <div className='margin_bottom'>Данные клиента</div>
+                <div className='margin_bottom'>
                     <div>ФИО</div>
-                    <input onChange={e=>setFio(e.target.value)} value={fio}></input>
-                    <div>E-mail</div>
-                    <input onChange={e=>setEmail(e.target.value)} value={email}></input>
-                    <div>Мобильный телефон</div>
-                    <input onChange={e=>setPhone(e.target.value)} value={phone}></input>
+                    <input className="text-field__input" onChange={e=>setFio(e.target.value)} value={fio}></input>
                 </div>
-                <div>
+                <div className='margin_bottom'>
+                    <div>E-mail</div>
+                    <input className="text-field__input" onChange={e=>setEmail(e.target.value)} value={email}></input>
+                </div>
+                <div className='margin_bottom'>
+                    <div>Мобильный телефон</div>
+                    <input className="text-field__input" onChange={e=>setPhone(e.target.value)} value={phone}></input>
+                </div>
+                <div className='margin_bottom'><b>Дополнительные услуги</b></div>
+                <div className='margin_bottom'>
                     {(serviceUpdate || !serviceUpdate)&&
                     <table>
                         {servicesData.map(service=>
@@ -295,6 +307,7 @@ const SessionFullCard = ({session,isCreate,setIsCreate,setSelectedSession}) => {
                                 <td style={{textAlign:'left'}}>
                                     {service.action? 
                                         <input 
+                                            className="text-field__input"
                                             type="number"
                                             defaultValue={service.actualPrice} 
                                             onChange={e=>{service.actualPrice=+e.target.value}}>
@@ -303,19 +316,20 @@ const SessionFullCard = ({session,isCreate,setIsCreate,setSelectedSession}) => {
                                     } 
                                 </td>
                                 <td style={{textAlign:'left'}}>{(service.action)?
-                                    <button onClick={e=>{service.action=false; setServiceUpdate(!serviceUpdate)}}>Удалить</button>:
-                                    <button onClick={e=>{service.action=true; setServiceUpdate(!serviceUpdate)}}>Добавить</button>}
+                                    <button className='button_delete' onClick={e=>{service.action=false; setServiceUpdate(!serviceUpdate)}}>Удалить</button>:
+                                    <button className='button_add' onClick={e=>{service.action=true; setServiceUpdate(!serviceUpdate)}}>Добавить</button>}
                                 </td>
                             </tr>
                         )}
                     </table>}
                 </div>
-                {dateError&& <div>Комната в это время уже забронирована или занята!</div>}
-                <button onClick={submitOnClick}>{(session!=null)?'Подтвердить изменения':'Создать'}</button>
-                {!isCreate&& <button onClick={onClickDeleteButton}>Удалить</button>}
-                <button onClick={e=>{setIsCreate(false); setSelectedSession(0)}}>Отмена</button>
+                <div className='row_button'>
+                    {dateError&& <div className='error_massege'>Комната в это время уже забронирована или занята!</div>}
+                    <button className="button_add" onClick={submitOnClick}>{(session!=null)?'Подтвердить изменения':'Создать'}</button>
+                    {!isCreate&& <button className="button_delete" onClick={onClickDeleteButton}>Удалить</button>}
+                    <button className="button_common" onClick={e=>{setIsCreate(false); setSelectedSession(0)}}>Отмена</button>
+                </div>
             </div>
-        </div>
     );
 };
 

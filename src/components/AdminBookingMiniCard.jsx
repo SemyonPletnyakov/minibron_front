@@ -14,28 +14,32 @@ const AdminBookingMiniCard = ({booking,setSelectedBooking,role}) => {
     };
 
     return (
-        <div>
-            <div>Бронирование номера {booking.roomName}</div>
-            <div>С {moment(booking.startDateTime, 'YYYY-MM-DD').format('DD.MM.YYYY')} по {moment(booking.endDateTime, 'YYYY-MM-DD').format('DD.MM.YYYY')} ({diffDates()} дней)</div>
-            <table style={{ padding:'5px'}}>
-                <tr><td style={{textAlign:'left'}}>ФИО:</td><td style={{textAlign:'right'}}>{booking.fio}</td></tr>
-                <tr><td style={{textAlign:'left'}}>Эл. почта:</td><td style={{textAlign:'right'}}>{booking.email}</td></tr>
-                <tr><td style={{textAlign:'left'}}>Телефон:</td><td style={{textAlign:'right'}}>{booking.phone}</td></tr>
-                <tr><td colspan="2" style={{textAlign:'center'}}>Ожидаемая общая цена</td></tr>
-                <tr><td style={{textAlign:'left'}}>Стоимость номера</td><td style={{textAlign:'right'}}>{booking.price}р</td></tr>
-                {
-                    booking.servicesForBookings.map((service)=>
-                        <tr>
-                            <td style={{textAlign:'left'}}>{service.serviceName}</td>
-                            <td style={{textAlign:'right'}}>{service.price==0? ('Бесплатно') : (service.price+'р')}</td>
-                        </tr>
-                    )
-                }
-                <tr><td style={{textAlign:'left'}}><b>Итого:</b></td><td style={{textAlign:'right'}}>{booking.price*diffDates()+booking.servicesForBookings.reduce((sum,current)=>sum+current.price,0)}р</td></tr>
-            </table>
-
-            
-            {role=='admin'&&<button className='button_common' onClick={clickOnBooking}>Изменить</button>}
+        <div className='admin_booking_card'>
+                <div className="booking_for_users_left">
+                    <div>Бронирование номера {booking.roomName}</div>
+                    <div>С {moment(booking.startDateTime, 'YYYY-MM-DD').format('DD.MM.YYYY')} по {moment(booking.endDateTime, 'YYYY-MM-DD').format('DD.MM.YYYY')} ({diffDates()} дней)</div>
+                    <table>
+                        <tr><td style={{textAlign:'left'}}>ФИО:</td><td style={{textAlign:'right'}}>{booking.fio}</td></tr>
+                        <tr><td style={{textAlign:'left'}}>Эл. почта:</td><td style={{textAlign:'right'}}>{booking.email}</td></tr>
+                        <tr><td style={{textAlign:'left'}}>Телефон:</td><td style={{textAlign:'right'}}>{booking.phone}</td></tr>
+                    </table>
+                    {role=='admin'&&<button className='button_common' onClick={clickOnBooking}>Изменить</button>}
+                </div>
+                <div>
+                    <table>
+                        <tr><td colspan="2" style={{textAlign:'center'}}>Ожидаемая общая цена</td></tr>
+                        <tr><td style={{textAlign:'left'}}>Стоимость номера</td><td style={{textAlign:'right'}}>{booking.price}р</td></tr>
+                        {
+                            booking.servicesForBookings.map((service)=>
+                                <tr>
+                                    <td style={{textAlign:'left'}}>{service.serviceName}</td>
+                                    <td style={{textAlign:'right'}}>{service.price==0? ('Бесплатно') : (service.price+'р')}</td>
+                                </tr>
+                            )
+                        }
+                        <tr><td style={{textAlign:'left'}}><b>Итого:</b></td><td style={{textAlign:'right'}}>{booking.price*diffDates()+booking.servicesForBookings.reduce((sum,current)=>sum+current.price,0)}р</td></tr>
+                    </table>
+                </div>
         </div>
     );
 };

@@ -28,8 +28,8 @@ const AccountsMenu = ({role}) => {
     return (
         <div>
             {isUpdated||!isUpdated &&
-            <div>
-                <button onClick={e=>setUsersData([{
+            <div className='admin_room_menu'>
+                <button className='button_add' onClick={e=>setUsersData([{
                                 id: 0,
                                 fio: "",
                                 role: "user",

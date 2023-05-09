@@ -9,12 +9,6 @@ const AccountsMiniCard = ({user,role,usersData,setUsersData, index, setIsUpdated
     const [errorDelete, setErrorDelete] = useState(false);
 
     async function create(e){
-        console.log({
-            fio:user.fio,
-            role:user.role,
-            login:user.login,
-            password:user.password
-        })
         let response = await AccountRequests.createUser({
             fio:user.fio,
             role:user.role,
@@ -47,10 +41,12 @@ const AccountsMiniCard = ({user,role,usersData,setUsersData, index, setIsUpdated
         else errorLogin(true);
     }
     async function delete1(e){
+        
         let response = await AccountRequests.deleteUser({
             id: user.id
         },cookies?.token);
-        if(response){
+        
+        if(response  || user.id==0){
             setErrorLogin(false);
             user.isChange=false;
             //setUsersData([...usersData.slice(0,index),...usersData.slice(index+1)]);
@@ -59,7 +55,9 @@ const AccountsMiniCard = ({user,role,usersData,setUsersData, index, setIsUpdated
             setUsersData(usersData.filter((item,i)=>i!=index)).then(
             setIsUpdatedData(!isUpdatedDate))
         }
-        else setErrorDelete(true);
+        else {
+            setErrorDelete(true);
+        }
     }
 
 
@@ -71,46 +69,57 @@ const AccountsMiniCard = ({user,role,usersData,setUsersData, index, setIsUpdated
         
         <div>
             { (updateUserView || !updateUserView)&&
-                <div>
+                <div className='admin_users_card'>
                     <table>
                         <tr>
                             <td style={{textAlign:'left'}}>
                                 ФИО:</td> 
                             <td style={{textAlign:'left'}}>{!(user.id==0||user.isChange)? user.fio:
-                                        <input defaultValue={user.fio} onChange={e=>user.fio=e.target.value}></input>}</td>
+                                        <input className="text-field__input" defaultValue={user.fio} onChange={e=>user.fio=e.target.value}></input>}</td>
                         </tr>
                         <tr>
                             <td style={{textAlign:'left'}}>
                                 Роль: </td> 
                             <td style={{textAlign:'left'}}>{!(user.id==0||user.isChange)? (user.role=="admin"?"Администратор":"Пользователь"):
-                                        <select defaultValue={user.role} onChange={e=>user.role=e.target.value}>
+                                        <label className='select'><select defaultValue={user.role} onChange={e=>user.role=e.target.value}>
                                             <option value="admin">Администратор</option>
                                             <option value="user">Пользователь</option>
-                                        </select>}</td> 
+                                        </select></label>}</td> 
                         </tr>
                         <tr>
                             <td style={{textAlign:'left'}}>
                                 Логин: </td> 
-                            <td style={{textAlign:'left'}}>{user.login}</td> 
+                            <td style={{textAlign:'left'}}>{(user.id==0)? 
+                                <input className="text-field__input" defaultValue={user.login} onChange={e=>user.login=e.target.value}></input>
+                                :user.login}
+                            </td> 
                         </tr>
                         <tr>
                             <td style={{textAlign:'left'}}>
                                 Пароль:</td>  
                         <td style={{textAlign:'left'}}>{!(user.id==0||user.isChange)? user.password:
-                                        <input defaultValue={user.password} onChange={e=>user.password=e.target.value}></input>}</td> 
+                                        <input className="text-field__input" defaultValue={user.password} onChange={e=>user.password=e.target.value}></input>}</td> 
                         </tr>
                     </table>
                     {role=="admin"&&
                     <div>
                         {errorLogin&& <div>Логин уже занят</div>}
                         {errorDelete&& <div>Нельзя удалить свой аккаунт</div>}
-                        {(user.id!=0&&!user.isChange)? <button onClick={e=>{ user.isChange=true; setUpdateuserView(!updateUserView);setErrorDelete(false);}}>Изменить</button>:
-                            user.isChange?
-                            <button onClick={update}>Подтвердить изменения</button>:
-                            <button onClick={create}>Создать</button>
-                        }
-                        {(user.isChange)&& <button onClick={e=>{user.isChange=false; setUpdateuserView(!updateUserView);setErrorDelete(false);}}>Отменить</button>}
-                        <button onClick={delete1}>Удалить</button>
+                        <div className='admin_users_card_bottom_buttons'>
+                            <div className='right_margin'>
+                                {(user.id!=0&&!user.isChange)? <button className='button_add' onClick={e=>{ user.isChange=true; setUpdateuserView(!updateUserView);setErrorDelete(false);}}>Изменить</button>:
+                                    user.isChange?
+                                    <button className='button_add' onClick={update}>Подтвердить изменения</button>:
+                                    <button className='button_add' onClick={create}>Создать</button>
+                                }
+                            </div>
+                            <div className='right_margin'>
+                                {(user.isChange)&& <button className='button_common' onClick={e=>{user.isChange=false; setUpdateuserView(!updateUserView);setErrorDelete(false);}}>Отменить</button>}
+                            </div>
+                            <div className='right_margin'>
+                                <button className='button_delete' onClick={delete1}>Удалить</button>
+                            </div>
+                        </div>
                     </div>
                     }
                 </div>

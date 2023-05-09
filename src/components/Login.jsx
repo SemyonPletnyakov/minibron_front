@@ -38,15 +38,19 @@ const Login = ({setUserData, removeUserData}) => {
     }
 
     return (
-        <div>
-            <span>Логин</span>
-            <input type="text" onChange={onChangeInputLogin}/>
-            <span>Пароль</span>
-            <input type="password" onChange={onChangeInputPassword}/>
-            <button onClick={onClickButtonLogin}>Войти</button>
+        <div className='login_page'>
             {failLogin&&
-                <span style={{color:"red"}}>Неверный логин или пароль</span>
+                <span className='error_massege'>Неверный логин или пароль</span>
             }
+            <div className='login_page_pole'>
+                <span>Логин </span>
+                <input className="text-field__input" type="text" onChange={onChangeInputLogin}/>
+            </div>
+            <div className='login_page_pole'>
+                <span>Пароль </span>
+                <input className="text-field__input" type="password" onChange={onChangeInputPassword}/>
+            </div>
+            <button className='button_common' onClick={onClickButtonLogin}>Войти</button>
         </div>
     );
 };

@@ -19,7 +19,12 @@ export default class BookingsRequests{
             
             bookingId: _bookingId,
             additionalServiceId: _serviceId
-        })
+        });
+        console.log({
+            
+            bookingId: _bookingId,
+            additionalServiceId: _serviceId
+        });
         return response.data;
     }
     static async getAll(_jwt){

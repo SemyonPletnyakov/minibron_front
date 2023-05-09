@@ -8,6 +8,7 @@ const AdditionalServicesMenu = ({ backToRoom, setSelectedServices, selectedServi
     const [allServices, setAllServices] = useState([]);
 
     async function loadAllService(){
+        setSelectedServices([]);
         setAllServices(await ServicesRequests.getAll(globalHotelId))
     }
     useEffect(()=>{
@@ -23,16 +24,18 @@ const AdditionalServicesMenu = ({ backToRoom, setSelectedServices, selectedServi
         goToBooking();
     };
     return (
-        <div>
-            <button onClick={clickOnBackButton}>Назад</button>
-            <div>Дополнительные услуги</div>
-            <div style={{justifyContent: 'flex-start'}}>
+        <div className='service_menu'>
+            <div className="button_back_left">
+                <button className='button_common' onClick={clickOnBackButton}>Назад</button>
+            </div>
+            <div><b>Дополнительные услуги</b></div>
+            <div>
                 {allServices.map((service)=>
                                 <AdditionalServicesCard service = {service} setSelectedServices={setSelectedServices} selectedServices = {selectedServices}/>
                             )
                 }
             </div>
-            <button onClick={clickOnBookingButton}>Далее</button>
+            <div className='button_next_right'><button className='button_common' onClick={clickOnBookingButton}>Далее</button></div>
         </div>
     );
 };

@@ -12,7 +12,7 @@ const DateForm = ({startDate, setStartDate, endDate, setEndDate, findRooms}) => 
     const [selectedRange, setSelectedRange] = useState({});
     const [startViewDate, setStartViewDate] = useState("");
     const [endViewDate, setEndViewDate] = useState("");
-    const [capasity, setCapacity] = useState(0);
+    const [capasity, setCapacity] = useState();
     
     //--работа с датами
     const handleStartChange = (e) =>{

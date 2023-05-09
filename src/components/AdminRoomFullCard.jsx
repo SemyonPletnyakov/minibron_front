@@ -171,50 +171,61 @@ const AdminRoomFullCard = ({room, isCreate, setIsCreate, setSelectedRoom}) => {
     
 
     return (
-        <div>
-            <span>Название</span>
-            <input value={title} onChange={(e)=>setTitle(e.target.value)}></input>
-
-            <table>
-                {imageData.map((image, i, arr)=>
-                    <tr key={i+"some_string"}>
-                        <th>
-                            <img style={{height:"200px"}} src={image.url} alt={image.name}></img>
-                        </th>
-                        <th>
-                            {(i!==0)&& <button onClick={e=>{
-                                imageData[i].numberOnTheList=imageData[i].numberOnTheList-1;
-                                imageData[i-1].numberOnTheList++;
-                                console.log(imageData[i].numberOnTheList)
-                                SortImageData();
-                            }}>Вверх</button>}
-                            {(i!=imageData.length-1)&&<button onClick={e=>{
-                                imageData[i].numberOnTheList++;
-                                imageData[i+1].numberOnTheList--;
-                                console.log(imageData[i].numberOnTheList)
-                                SortImageData();
-                            }}>Вниз</button>}
-                        </th>
-                        <th>
-                            <button onClick={e=>{
-                                RemoveImageData(i);
-                            }}>Удалить</button>
-                        </th>
-                    </tr>
-                ) }
-            </table>
-            <span>Добавить изображение</span>
-            <input type="file" onChange={onChangeIputImage}></input>
-            <span>Описание</span>
-            <input value={description} onChange={(e)=>setDescription(e.target.value)}></input>
-            <span>Вместимость/число коек</span>
-            <input value={capacity} onChange={(e)=>setCapacity(e.target.value)} type="number"></input>
-            <span>Цена</span>
-            <input value={price} onChange={(e)=>setPrice(e.target.value)} type="number"></input>
-
-            <button onClick={submitOnClick}>{(room!=null)?'Подтвердить изменения':'Создать'}</button>
-            {!isCreate&& <button onClick={onClickDeleteButton}>Удалить</button>}
-            <button onClick={e=>{setIsCreate(false); setSelectedRoom(0)}}>Отмена</button>
+        <div className='admin_room_menu'>
+            <div className='margin_bottom'>
+                <span>Название номера</span>
+                <input className="text-field__input2" value={title} onChange={(e)=>setTitle(e.target.value)}></input>
+            </div>
+            <div className='admin_fullroom_img_mas'>
+                {imageData.length>0&&<span>Изображения и их порядок:</span>}
+                <table>
+                    {imageData.map((image, i, arr)=>
+                        <tr key={i+"some_string"}>
+                            <th>
+                                <img className='admin_fullroom_img' src={image.url} alt={image.name}></img>
+                            </th>
+                            <th>
+                                <div className='admin_fullroom_img_button'>
+                                {(i!==0)&& <div className='admin_fullroom_img_button'><button className="button_common" onClick={e=>{
+                                    imageData[i].numberOnTheList=imageData[i].numberOnTheList-1;
+                                    imageData[i-1].numberOnTheList++;
+                                    SortImageData();
+                                }}>Вверх</button></div>}
+                                {(i!=imageData.length-1)&&<div className='admin_fullroom_img_button'><button className="button_common" onClick={e=>{
+                                    imageData[i].numberOnTheList++;
+                                    imageData[i+1].numberOnTheList--;
+                                    SortImageData();
+                                }}>Вниз </button></div>}
+                                </div>
+                            </th>
+                            <th>
+                                <button className="button_delete" onClick={e=>{
+                                    RemoveImageData(i);
+                                }}>Удалить</button>
+                            </th>
+                        </tr>
+                    ) }
+                </table>
+                <span>Добавить изображение: </span>
+                <input type="file" onChange={onChangeIputImage}></input>
+            </div>
+            <div className='margin_bottom'>
+                <span>Описание</span>
+                <textarea className="text-field__input3" value={description} onChange={(e)=>setDescription(e.target.value)}></textarea>
+            </div>
+            <div className='margin_bottom'>
+                <span>Вместимость/число коек</span>
+                <input name="postContent" className="text-field__input" value={capacity} onChange={(e)=>setCapacity(e.target.value)} type="number"></input>
+            </div>
+            <div className='margin_bottom'>
+                <span>Цена</span>
+                <input className="text-field__input" value={price} onChange={(e)=>setPrice(e.target.value)} type="number"></input>
+            </div>
+            <div className='row_button'>
+                <button className="button_add" onClick={submitOnClick}>{(room!=null)?'Подтвердить изменения':'Создать'}</button>
+                {!isCreate&& <button className="button_delete" onClick={onClickDeleteButton}>Удалить</button>}
+                <button className="button_common" onClick={e=>{setIsCreate(false); setSelectedRoom(0)}}>Отмена</button>
+            </div>
 
         </div>
     );

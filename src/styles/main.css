@@ -66,6 +66,41 @@
     color:#008CBA;
     cursor:pointer;
   }
+  .button_add{
+    padding:14px 40px;
+    background-color: #17b63a;
+    color: white;
+    border: 2px solid #17b63a;
+    border-radius: 3px;
+    padding: 0.375rem 0.75rem;
+    font-family: inherit;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    text-align: center;
+    min-width: 115px;
+  }
+  .button_add:hover{
+    background-color:white;
+    color:#17b63a;
+    cursor:pointer;
+  }
+  .button_delete{
+    padding:14px 40px;
+    background-color: #e71e1e;
+    color: white;
+    border: 2px solid #e71e1e;
+    border-radius: 3px;
+    padding: 0.375rem 0.75rem;
+    font-family: inherit;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    min-width: 115px;
+  }
+  .button_delete:hover{
+    background-color:white;
+    color:#e71e1e;
+    cursor:pointer;
+  }
   .date_form:hover>.day_picker{
     visibility: visible;
     display:block;
@@ -75,20 +110,522 @@
     visibility:collapse;
     display:none;
   }
-  .room_minicard{
-    display:flex;
+  .room_menu{
+    margin: 20px;
     padding: 20px;
-    margin: 10px;
-    border: 1px solid rgb(47, 105, 148);
-    border-radius: 5px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content:space-evenly;
+    border: 3px solid rgb(47, 105, 148);
+    border-radius:  10px;
+    background: linear-gradient(to top,rgb(200, 215, 255),rgb(255, 255, 255));
+  }
+  .room_minicard{
+    margin: 30px;
+    width: 350px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
     
   }
-  .img_room_minicard{
-    max-width:200px;
-    max-height:200px;
+  .room_minicard_img{
+    object-fit: cover;
+    width: 350px;
+    height: 150px;
+    border-radius: 10px 10px 0 0;
+  }
+  .room_minicard_body{
+    padding: 10px 0px 10px 0px;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    border-top: 0;
+    border-radius:  0 0 10px 10px;
   }
   .room_minicard_low_block{
+    padding: 10px 10px 0 10px;
+    width: 90%;
     display: flex;
-    justify-content:flex-end;
-    bottom: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
+  .room_fullcard{
+    margin: 20px;
+    padding: 20px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    border: 3px solid rgb(47, 105, 148);
+    border-radius:  10px;
+
+  }
+  .button_back_left{
+    width: 100%;
+    padding: 0 0 20px 0
+  }
+  
+  .room_fullcard_body{
+    width: 100%;
+    display:flex;
+    flex-direction: row;
+  }
+  .room_fullcard_main{
+    margin: 20px;
+    width: 35%;
+  }
+  .room_fullcard_descriprtion{
+    margin: 20px;
+    width: 55%;
+  }
+  .rsis-image{
+    object-fit: cover !important;
+    width: 896px !important;
+    height: 504px !important;
+    background-position: center !important;
+    background-size: cover !important;
+  }
+  .rsis-container{
+    object-fit: cover !important;
+    width: 896px !important;
+    height: 504px !important;
+    background-position: center !important;
+    background-size: cover !important;
+  }
+  .rsis-container div{
+    object-fit: cover !important;
+    width: 896px !important;
+    height: 504px !important;
+    background-position: center !important;
+    background-size: cover !important;
+  }
+  .margin_bottom{
+    margin: 0 0 10px 0;
+  }
+  .service_menu{
+    margin: 20px;
+    padding: 20px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    border: 3px solid rgb(47, 105, 148);
+    border-radius:  10px;
+    background: linear-gradient(to top,rgb(200, 215, 255),rgb(255, 255, 255));
+  }
+  .service_card{
+    margin: 20px;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 600px;
+    border-radius:  10px;
+    display:flex;
+    flex-direction: row;
+    background: rgb(255, 255, 255);
+  }
+  .service_img{
+    object-fit: cover;
+    width: 200px;
+    height: 200px;
+    min-width: 200px;
+    min-height: 200px;
+  }
+  .service_main{
+    margin: 0 0 0 20px;
+    hyphens: auto;
+  }
+  .button_next_right{
+    width: 600px;
+    position:relative;
+    right: -70%;
+  }
+  .booking_for_users{
+    margin: 20px;
+    padding: 20px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    border: 3px solid rgb(47, 105, 148);
+    border-radius:  10px;
+  }
+  .booking_for_users_body{
+    width: 100%;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+  .booking_for_users_left{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .text_center_and_padding{
+    padding: 0 0 20px 0;
+    width: 100%;
+    text-align: center;
+  }
+  .center_column{
+    width: 100%;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .success_massege{
+    margin: 10px;
+    padding:10px;
+    border-radius: 5px;
+    background-color: rgb(210, 249, 210);
+    border: 1px solid rgb(160, 201, 160);
+    color: rgb(80, 146, 80);
+  }
+  .info_massege{
+    margin: 10px;
+    padding:10px;
+    border-radius: 5px;
+    background-color: #FDF7DF;
+    border: 1px solid #FEEC6F;
+    color: #C9971C;
+  }
+  .error_massege{
+    margin: 10px;
+    padding:10px;
+    border-radius: 5px;
+    background-color: #FEE;
+    border: 1px solid #EDD;
+    color: #A66;
+  }
+
+
+  .login_page{
+    margin: 20px;
+    padding: 20px;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    border: 3px solid rgb(47, 105, 148);
+    border-radius:  10px;
+  }
+  .login_page_pole{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 0 10px 0;
+  }
+  .admin_page{
+    margin: 20px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    border: 3px solid rgb(47, 105, 148);
+    border-radius:  10px;
+  }
+  .admin_upper_menu{
+    width: 100%;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .admin_main_menu{
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+  
+  .button_menu{
+    padding:14px 40px;
+    background-color: #0f93be;
+    color: white;
+    border: 2px solid #013b4f;
+    border-top: 0;
+    border-bottom: 0;
+    padding: 0.375rem 0.75rem;
+    font-family: inherit;
+    font-size: 1rem;
+  }
+  .button_menu:hover{
+    background-color:white;
+    border-bottom: 1px solid #0f93be;
+    border-top: 1px solid #0f93be;
+    color:#008CBA;
+    cursor:pointer;
+  }
+  .button_menu_left{
+    padding:14px 40px;
+    background-color: #0f93be;
+    color: white;
+    border: 2px solid #013b4f;
+    border-bottom: 1px solid #0f93be;
+    border-top: 1px solid #0f93be;
+    border-left: 1px solid #0f93be;
+    padding: 0.375rem 0.75rem;
+    font-family: inherit;
+    font-size: 1rem;
+    border-radius: 7px 0 0 0;
+  }
+  .button_menu_left:hover{
+    background-color:white;
+    color:#008CBA;
+    cursor:pointer;
+  }
+  .button_menu_exit{
+    padding:14px 40px;
+    background-color: #e71e1e;
+    color: white;
+    border: 2px solid #e71e1e;
+    padding: 0.375rem 0.75rem;
+    font-family: inherit;
+    font-size: 1rem;
+    border-radius: 0 7px 0 0;
+  }
+  .button_menu_exit:hover{
+    background-color:white;
+    color:#e71e1e;
+    cursor:pointer;
+  }
+
+  .admin_room_menu{
+    margin: 10px 0 10px 0;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .admin_room_card{
+    margin: 10px 0 10px 0;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 600px;
+    border-radius:  10px;
+    display:flex;
+    flex-direction: row;
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(47, 105, 148);
+  }
+  .admin_fullroom_img{
+    object-fit: cover;
+    width: 350px;
+    height: 150px;
+  }
+  .admin_fullroom_img_mas{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 0 10px 0;
+  }
+  .admin_fullroom_img_button{
+    display:flex;
+    flex-direction: column;
+    margin: 10px 0 10px 0;
+  }
+  .text-field__input2 {
+    display: block;
+    width: 400px;
+    height: 30px;
+    padding: 0.375rem 0.75rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #bdbdbd;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    
+  }
+
+  .text-field__input2::placeholder {
+    color: #212529;
+    opacity: 0.4;
+  }
+
+  .text-field__input2:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #bdbdbd;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(158, 158, 158, 0.25);
+  }
+
+  .text-field__input2:disabled,
+  .text-field__input2[readonly] {
+    background-color: #f5f5f5;
+    opacity: 1;
+  }
+  .text-field__input3 {
+    display: block;
+    width: 600px;
+    height: 120px;
+    padding: 0.375rem 0.75rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #bdbdbd;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    
+  }
+
+  .text-field__input3::placeholder {
+    color: #212529;
+    opacity: 0.4;
+  }
+
+  .text-field__input3:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #bdbdbd;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(158, 158, 158, 0.25);
+  }
+
+  .text-field__input3:disabled,
+  .text-field__input3[readonly] {
+    background-color: #f5f5f5;
+    opacity: 1;
+  }
+
+
+  .row_button{
+    width: 100%;
+    min-width: 500px;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .admin_booking_card{
+    margin: 10px 0 10px 0;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 650px;
+    border-radius:  10px;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(47, 105, 148);
+  }
+  .admin_users_card{
+    margin: 10px 0 10px 0;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+    border-radius:  10px;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(47, 105, 148);
+  }
+  .admin_users_card_bottom_buttons{
+    margin: 15px 0 0 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .right_margin{
+    margin: 0 10px 0 0;
+  }
+  .your_account_cards{
+    margin: 10px 0 10px 0;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+    border-radius:  10px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(47, 105, 148);
+  }
+  
+  .select {
+    position: relative;
+    min-width: 200px;
+  }
+  .select svg {
+    position: absolute;
+    right: 12px;
+    top: calc(50% - 3px);
+    width: 10px;
+    height: 6px;
+    stroke-width: 2px;
+    stroke: #9098a9;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    pointer-events: none;
+  }
+  .select select {
+    -webkit-appearance: none;
+    padding: 7px 40px 7px 12px;
+    width: 233px;
+    border: 1px solid #b1b0b0;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 1px 3px -2px #9098a9;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 16px;
+    transition: all 150ms ease;
+  }
+  .select select:required:invalid {
+    color: #5a667f;
+  }
+  .select select option {
+    color: #223254;
+  }
+  .select select option[value=""][disabled] {
+    display: none;
+  }
+  .select select:focus {
+    outline: none;
+    border-color: #07f;
+    box-shadow: 0 0 0 2px rgba(0,119,255,0.2);
+  }
+  .select select:hover + svg {
+    stroke: #07f;
+  }
+  .sprites {
+    position: absolute;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    user-select: none;
+  }
+  

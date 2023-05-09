@@ -21,8 +21,8 @@ const SessionMenu = ({role}) => {
     return (
         <div>
             {(selectedSession==0&&!isCreate)?
-                (<div>
-                    <button onClick={e=>setIsCreate(true)}>Добавить</button>
+                (<div className='admin_room_menu'>
+                    <button className='button_add' onClick={e=>setIsCreate(true)}>Добавить</button>
                     {sessionData.map(session=>
                         <SessionMiniCard session={session} setSelectedSession={setSelectedSession} role={role}/>
                     )}

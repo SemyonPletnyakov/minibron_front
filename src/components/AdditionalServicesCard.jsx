@@ -17,19 +17,24 @@ const AdditionalServicesCard = ({service, setSelectedServices, selectedServices}
     }
 
     return (
-        <div>
-            <div>{service.title}</div>
-            <div>{service.description}</div>
-            <img src={ServicesRequests.getPictureLink(1,service.pictureName)} alt="Картинка сервиса"/>
-            <div>Цена: {service.price==0? ('Бесплатно') : (service.price+'р')}</div>
-            {(selected)?(
-                    <button onClick={clickOnDeleteService}>Удалить</button>
-                )
-                :
-                (
-                    <button onClick={clickOnAddService}>Добавить</button>
-                )
-            }
+        <div className='service_card'>
+            <div>
+                <img className='service_img' src={ServicesRequests.getPictureLink(1,service.pictureName)} alt="Картинка сервиса"/>
+                
+            </div>
+            <div className='service_main'>
+                <div className='margin_bottom'>{service.title}</div>
+                <div className='margin_bottom'>{service.description}</div>
+                <div className='margin_bottom'>Цена: {service.price==0? ('Бесплатно') : (service.price+'р')}</div>
+                {(selected)?(
+                        <button className='button_delete' onClick={clickOnDeleteService}>Удалить</button>
+                    )
+                    :
+                    (
+                        <button className='button_add' onClick={clickOnAddService}>Добавить</button>
+                    )
+                }
+            </div>
         </div>
     );
 };

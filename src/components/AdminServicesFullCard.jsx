@@ -86,34 +86,44 @@ const AdminServicesFullCard = ({service, isCreate,setIsCreate, setSelectedServic
 
 
     return (
-        <div>
-            <span>Название</span>
-            <input value={title} onChange={(e)=>setTitle(e.target.value)}></input>
+        <div className='admin_room_menu'>
+            <div className='margin_bottom'>
+                <span>Название услуги</span>
+                <input className="text-field__input2" value={title} onChange={(e)=>setTitle(e.target.value)}></input>
+            </div>
             {imageName!=""&&
-            <table>
-                <tr>
-                    <th>
-                        <img style={{height:"200px"}} src={imageSrc} alt={imageName}></img>
-                    </th>
-                    <th>
-                        <button onClick={e=>{
-                            setNewFiles([]);
-                            setImageName("");
-                        }}>Удалить</button>
-                    </th>
-                </tr>
-            </table>
+            <div className='admin_fullroom_img_mas'>
+                <span>Изображение</span>
+                <table>
+                    <tr>
+                        <th>
+                            <img className='admin_fullroom_img' src={imageSrc} alt={imageName}></img>
+                        </th>
+                        <th>
+                            <button className="button_delete" onClick={e=>{
+                                setNewFiles([]);
+                                setImageName("");
+                            }}>Удалить</button>
+                        </th>
+                    </tr>
+                </table>
+            </div>
             }
             <span>{imageName=="" ? "Добавить" : "Изменить"} изображение</span>
-            <input type="file" onChange={onChangeIputImage}></input>
-            <span>Описание</span>
-            <input value={description} onChange={(e)=>setDescription(e.target.value)}></input>
-            <span>Цена</span>
-            <input value={price} onChange={(e)=>setPrice(e.target.value)} type="number"></input>
-
-            <button onClick={submitOnClick}>{(service!=null)?'Подтвердить изменения':'Создать'}</button>
-            {!isCreate&& <button onClick={onClickDeleteButton}>Удалить</button>}
-            <button onClick={e=>{setIsCreate(false); setSelectedService(0)}}>Отмена</button>
+                <input type="file" onChange={onChangeIputImage}></input>
+            <div className='margin_bottom'>
+                <span>Описание</span>
+                <textarea className="text-field__input3" value={description} onChange={(e)=>setDescription(e.target.value)}></textarea>
+            </div>
+            <div className='margin_bottom'>
+                <span>Цена</span>
+                <input className="text-field__input" value={price} onChange={(e)=>setPrice(e.target.value)} type="number"></input>
+            </div>
+            <div className='row_button'>
+                <button className="button_add" onClick={submitOnClick}>{(service!=null)?'Подтвердить изменения':'Создать'}</button>
+                {!isCreate&& <button className="button_delete" onClick={onClickDeleteButton}>Удалить</button>}
+                <button className="button_common" onClick={e=>{setIsCreate(false); setSelectedService(0)}}>Отмена</button>
+            </div>
 
         </div>
     );

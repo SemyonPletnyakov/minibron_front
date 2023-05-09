@@ -10,8 +10,8 @@ const RoomMiniCard = ({room, selectRoom}) => {
     }
     return (
         <div className='room_minicard'>
-            <img className='img_room_minicard' src={RoomsRequests.getPictureLink(globalHotelId,room.id,room.pictureName)} alt="Картинка номера" onClick={clickOnRoom}/>
-            <div>
+            <img className='room_minicard_img' src={RoomsRequests.getPictureLink(globalHotelId,room.id,room.pictureName)} alt="Картинка номера" onClick={clickOnRoom}/>
+            <div className='room_minicard_body'>
                 <div onClick={clickOnRoom}>{room.title}</div>
                 <div className='room_minicard_low_block'>
                     <div>Цена: {room.price}р</div>

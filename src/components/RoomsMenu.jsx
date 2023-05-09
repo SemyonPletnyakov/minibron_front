@@ -3,7 +3,7 @@ import RoomMiniCard from './RoomMiniCard';
 
 const RoomsMenu = ({roomsData, selectRoom}) => {
     return (
-        <div style={{justifyContent: 'flex-start'}}>
+        <div className='room_menu'>
             {roomsData.map((room)=>
                             <RoomMiniCard room = {room} selectRoom = {selectRoom}/>
                         )
