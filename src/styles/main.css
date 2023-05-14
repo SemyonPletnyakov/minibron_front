@@ -576,7 +576,7 @@
   
   .select {
     position: relative;
-    min-width: 200px;
+    width: auto;
   }
   .select svg {
     position: absolute;
@@ -594,7 +594,7 @@
   .select select {
     -webkit-appearance: none;
     padding: 7px 40px 7px 12px;
-    width: 233px;
+    width: auto;
     border: 1px solid #b1b0b0;
     border-radius: 5px;
     background: #fff;
@@ -627,5 +627,9 @@
     height: 0;
     pointer-events: none;
     user-select: none;
+  }
+  .statistic_body{
+    width: 800px;
+    height: 400px;
   }
   

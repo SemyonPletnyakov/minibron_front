@@ -11,6 +11,7 @@ import SessionMenu from './components/SessionMenu';
 import AccountsMenu from './components/AccountsMenu';
 import YourAccount from './components/YourAccount';
 import './styles/main.css';
+import StatisticMenu from './components/StatisticMenu';
 
 const AppAdmin = () => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
@@ -91,6 +92,9 @@ const AppAdmin = () => {
                 }
                 {activeComponent == AdminComponentsEnum.YourAccountsMenu&&
                     <YourAccount role={role} fio={fio} login={login} />
+                }
+                {activeComponent == AdminComponentsEnum.StatisticMenu&&
+                    <StatisticMenu/>
                 }
             </div>
             }

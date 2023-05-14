@@ -13,6 +13,7 @@ const AdminMenu = ({setActiveComponent, role, exitButtonOnClick}) => {
                     <button className='button_menu' onClick={(e=>{setActiveComponent(AdminComponentsEnum.AccountsMenu)})}>Учётные записи</button>
                 }
                 <button className='button_menu' onClick={(e=>{setActiveComponent(AdminComponentsEnum.YourAccountsMenu)})}>Моя учётная запись</button>
+                <button className='button_menu' onClick={(e=>{setActiveComponent(AdminComponentsEnum.StatisticMenu)})}>Статистика</button>
             </div>
             <button className='button_menu_exit' onClick={exitButtonOnClick}>Выйти</button>
         </div>

@@ -7,4 +7,5 @@ export default class AdminComponentsEnum{
     static SessionsMenu = 5;
     static AccountsMenu = 6;
     static YourAccountsMenu = 7;
+    static StatisticMenu = 8;
 }
