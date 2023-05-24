@@ -5,7 +5,7 @@ import ServicesRequests from '../API/ServicesRequests';
 import AdminServicesFullCard from './AdminServicesFullCard';
 import AdminServicesMiniCard from './AdminServicesMiniCard';
 
-const AdminServicesMenu = ({role}) => {
+const AdminServicesMenu = ({role, jwt}) => {
     
     const [serviceData, setServiceData] = useState([]);
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
@@ -32,7 +32,7 @@ const AdminServicesMenu = ({role}) => {
                     )}
                 </div>)
                 :
-                (<AdminServicesFullCard service={serviceData.find(item=>item.id==selectedService)} isCreate={isCreate} setIsCreate={setIsCreate} setSelectedService={setSelectedService}/>)
+                (<AdminServicesFullCard jwt={jwt} service={serviceData.find(item=>item.id==selectedService)} isCreate={isCreate} setIsCreate={setIsCreate} setSelectedService={setSelectedService}/>)
             }
         </div>
     );

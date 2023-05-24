@@ -3,7 +3,7 @@ import { useCookies } from 'react-cookie';
 import globalHotelId from '..';
 import ServicesRequests from '../API/ServicesRequests';
 
-const AdminServicesFullCard = ({service, isCreate,setIsCreate, setSelectedService}) => {
+const AdminServicesFullCard = ({service, isCreate,setIsCreate, setSelectedService, jwt}) => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
     
 
@@ -42,13 +42,13 @@ const AdminServicesFullCard = ({service, isCreate,setIsCreate, setSelectedServic
                 description:description,
                 price:price,
                 pictureName:imageName
-            },cookies?.token);
+            },jwt);
             if(response && newFiles.length!=0){
                 const formData = new FormData();
                 for (let i = 0; i < newFiles.length; i++) {
                 formData.append("images", newFiles[i]);
                 }
-                await ServicesRequests.createPictures(formData,cookies?.token)
+                await ServicesRequests.createPictures(formData,jwt)
             }
         }
         else{
@@ -63,13 +63,13 @@ const AdminServicesFullCard = ({service, isCreate,setIsCreate, setSelectedServic
                 description:description,
                 price:price,
                 pictureName:imageName
-            },cookies?.token);
+            },jwt);
             if(response && newFiles.length!=0){
                 const formData = new FormData();
                 for (let i = 0; i < newFiles.length; i++) {
                 formData.append("images", newFiles[i]);
                 }
-                await ServicesRequests.createPictures(formData,cookies?.token)
+                await ServicesRequests.createPictures(formData,jwt)
                 setIsCreate(false);
                 setServiceId(response);
                 setSelectedService(response);
@@ -79,7 +79,7 @@ const AdminServicesFullCard = ({service, isCreate,setIsCreate, setSelectedServic
     }
 
     async function onClickDeleteButton(e){
-        await ServicesRequests.deleteService({id:_serviceId},cookies?.token);
+        await ServicesRequests.deleteService({id:_serviceId},jwt);
         setIsCreate(false);
         setSelectedService(0);
     }

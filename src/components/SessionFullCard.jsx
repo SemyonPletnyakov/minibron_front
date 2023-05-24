@@ -10,7 +10,7 @@ import { DayPicker, SelectRangeEventHandler} from 'react-day-picker';
 import { ru } from 'date-fns/locale'
 import globalHotelId from '..';
 
-const SessionFullCard = ({session,isCreate,setIsCreate,setSelectedSession}) => {
+const SessionFullCard = ({session,isCreate,setIsCreate,setSelectedSession, jwt}) => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
     const [sessionId, setSessionId] = useState(!isCreate&& session!=null? session.id : 0);
@@ -51,7 +51,7 @@ const SessionFullCard = ({session,isCreate,setIsCreate,setSelectedSession}) => {
                 action: session?.servicesForSessions.find(y=>y.additionalServiceId==x.id)!=null
             })));
         
-        const roomResult = await RoomsRequests.getAllRooms(cookies?.token);
+        const roomResult = await RoomsRequests.getAllRooms(jwt);
         let sortedRoomResult = roomResult.map(x=>(
             {
                 id:x.id, 
@@ -91,18 +91,18 @@ const SessionFullCard = ({session,isCreate,setIsCreate,setSelectedSession}) => {
                 phone: phone,
                 email: email,
                 actualPriceForRoom: roomPrice
-            },cookies?.token);
+            },jwt);
             if(response){
                 for (let i = 0; i < servicesData.length; i++) {
                     console.log(servicesData[i].oldId>0);
                     if(servicesData[i].oldId>0)
-                        await SessionRequests.deleteSessionServiceById({id:servicesData[i].oldId}, cookies?.token);
+                        await SessionRequests.deleteSessionServiceById({id:servicesData[i].oldId}, jwt);
                     if(servicesData[i].action)
                         SessionRequests.createSessionService({
                             sessionsId: sessionId,
                             additionalServiceId: servicesData[i].id,
                             actualPrice: servicesData[i].actualPrice
-                        },cookies?.token);
+                        },jwt);
                         console.log({
                             sessionsId: sessionId,
                             additionalServiceId: servicesData[i].id,
@@ -136,7 +136,7 @@ const SessionFullCard = ({session,isCreate,setIsCreate,setSelectedSession}) => {
                                         phone: phone,
                                         email: email,
                                         actualPriceForRoom: mainRoom.price
-                                    },cookies?.token);
+                                    },jwt);
                 if(response>0){
                     for (let i = 0; i < servicesData.length; i++) {
                         if(servicesData[i].oldId==0 && servicesData[i].action)
@@ -144,7 +144,7 @@ const SessionFullCard = ({session,isCreate,setIsCreate,setSelectedSession}) => {
                                 sessionsId: response,
                                 additionalServiceId: servicesData[i].id,
                                 actualPrice: servicesData[i].actualPrice
-                            },cookies?.token);
+                            },jwt);
                     }
                     setDateError(false);
                     setSessionId(response);
@@ -157,7 +157,7 @@ const SessionFullCard = ({session,isCreate,setIsCreate,setSelectedSession}) => {
     }
     async function onClickDeleteButton(e){
         console.log({id:sessionId})
-        await SessionRequests.deleteSessionById({id:sessionId}, cookies?.token);
+        await SessionRequests.deleteSessionById({id:sessionId}, jwt);
         setIsCreate(false);
         setSelectedSession(0);
     }

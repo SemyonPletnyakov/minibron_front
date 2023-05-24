@@ -76,25 +76,25 @@ const AppAdmin = () => {
             <div className='admin_page'>   
                 <AdminMenu exitButtonOnClick={exitButtonOnClick} setActiveComponent={setActiveComponent} role={role}/>
                 {activeComponent== AdminComponentsEnum.RoomsMenu&&
-                    <AdminRoomMenu role={role}/>
+                    <AdminRoomMenu role={role} jwt={jwt}/>
                 }
                 {activeComponent== AdminComponentsEnum.ServicesMenu&&
-                    <AdminServicesMenu role={role}/>
+                    <AdminServicesMenu role={role} jwt={jwt}/>
                 }
                 {activeComponent== AdminComponentsEnum.BookingsMenu&&
-                    <AdminBookingMenu role={role}/>
+                    <AdminBookingMenu role={role} jwt={jwt}/>
                 }
                 {activeComponent== AdminComponentsEnum.SessionsMenu&&
-                    <SessionMenu role={role}/>
+                    <SessionMenu role={role} jwt={jwt}/>
                 }
                 {activeComponent == AdminComponentsEnum.AccountsMenu&&
-                    <AccountsMenu role={role}/>
+                    <AccountsMenu role={role} jwt={jwt}/>
                 }
                 {activeComponent == AdminComponentsEnum.YourAccountsMenu&&
                     <YourAccount role={role} fio={fio} login={login} />
                 }
                 {activeComponent == AdminComponentsEnum.StatisticMenu&&
-                    <StatisticMenu/>
+                    <StatisticMenu jwt={jwt}/>
                 }
             </div>
             }

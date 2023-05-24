@@ -3,7 +3,7 @@ import { useCookies } from 'react-cookie';
 import globalHotelId from '..';
 import RoomsRequests from '../API/RoomsRequests';
 
-const AdminRoomFullCard = ({room, isCreate, setIsCreate, setSelectedRoom}) => {
+const AdminRoomFullCard = ({room, isCreate, setIsCreate, setSelectedRoom, jwt}) => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
     
     const[imageData, setImageData] = useState([]);
@@ -102,14 +102,14 @@ const AdminRoomFullCard = ({room, isCreate, setIsCreate, setSelectedRoom}) => {
                     capacity:capacity,
                     price:price,
                     pictureName:imageData[0]?.name
-                },cookies?.token);
+                },jwt);
                 if(response){
                     await RoomsRequests.updateRoomPicturesData(imageData.map(item=>({
                         id:item.id,
                         roomId:_roomId,
                         name: item.name,
                         numberOnTheList:item.numberOnTheList
-                    })),cookies?.token);
+                    })),jwt);
                     //await RoomsRequests.createPictures(imageData.filter(item=>item.added).map(item=>(item.url)),_roomId,cookies?.token)
                     const formData = new FormData();
                     /*newFiles.forEach(function(item, index, array) {
@@ -124,7 +124,7 @@ const AdminRoomFullCard = ({room, isCreate, setIsCreate, setSelectedRoom}) => {
                         }
                       //console.log(formData.entries());
                       //console.log(formData.getHeaders())
-                    await RoomsRequests.createPictures(formData,_roomId,cookies?.token)
+                    await RoomsRequests.createPictures(formData,_roomId,jwt)
                 }
             }
             else{
@@ -134,14 +134,14 @@ const AdminRoomFullCard = ({room, isCreate, setIsCreate, setSelectedRoom}) => {
                     capacity:capacity,
                     price:price,
                     pictureName:imageData[0]?.name
-                },cookies?.token);
+                },jwt);
                 if(response){
                     await RoomsRequests.updateRoomPicturesData(imageData.map(item=>({
                         id:item.id,
                         roomId:response,
                         name: item.name,
                         numberOnTheList:item.numberOnTheList
-                    })),cookies?.token);
+                    })),jwt);
 
                     const formData = new FormData();
                       console.log(newFiles);
@@ -151,7 +151,7 @@ const AdminRoomFullCard = ({room, isCreate, setIsCreate, setSelectedRoom}) => {
                       for (var key of formData.entries()) {
                         console.log(key[0] + ', ' + key[1]);
                         }
-                    await RoomsRequests.createPictures(formData,response,cookies?.token)
+                    await RoomsRequests.createPictures(formData,response,jwt)
                     setIsCreate(false);
                     setRoomId(response);
                     setSelectedRoom(response);

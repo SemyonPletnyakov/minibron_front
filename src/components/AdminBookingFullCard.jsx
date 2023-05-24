@@ -10,7 +10,7 @@ import { DayPicker, SelectRangeEventHandler} from 'react-day-picker';
 import { ru } from 'date-fns/locale'
 import BookingsRequests from '../API/BookingsRequests';
 
-const AdminBookingFullCard = ({booking,isCreate,setIsCreate,setSelectedBooking}) => {
+const AdminBookingFullCard = ({booking,isCreate,setIsCreate,setSelectedBooking, jwt}) => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
     const [bookingId, setBookingId] = useState(!isCreate&& booking!=null? booking.id : 0);
@@ -48,7 +48,7 @@ const AdminBookingFullCard = ({booking,isCreate,setIsCreate,setSelectedBooking})
                 action: booking?.servicesForBookings.find(y=>y.additionalServiceId==x.id)!=null
             })));
         
-        const roomResult = await RoomsRequests.getAllRooms(cookies?.token);
+        const roomResult = await RoomsRequests.getAllRooms(jwt);
         setRoomData(roomResult);
         if(typeof roomResult.filter(x=>x.id==roomId) != "undefined")
             setMainRoom(roomResult.find(x=>x.id==roomId) ?? mainRoom);
@@ -66,11 +66,11 @@ const AdminBookingFullCard = ({booking,isCreate,setIsCreate,setSelectedBooking})
                 fio: fio,
                 phone: phone,
                 email: email
-            },cookies?.token);
+            },jwt);
             if(response){
                 for (let i = 0; i < servicesData.length; i++) {
                     if(servicesData[i].oldId>0 && !servicesData[i].action)
-                        BookingsRequests.deleteBookingServiceById({id:servicesData[i].oldId}, cookies?.token);
+                        BookingsRequests.deleteBookingServiceById({id:servicesData[i].oldId}, jwt);
                     if(servicesData[i].oldId==0 && servicesData[i].action)
                         await BookingsRequests.newBookingService(servicesData[i].id, bookingId, globalHotelId);
                 }
@@ -105,7 +105,7 @@ const AdminBookingFullCard = ({booking,isCreate,setIsCreate,setSelectedBooking})
          
     }
     async function onClickDeleteButton(e){
-        await BookingsRequests.deleteBookingById({id:bookingId}, cookies?.token);
+        await BookingsRequests.deleteBookingById({id:bookingId}, jwt);
         setIsCreate(false);
         setSelectedBooking(0);
     }

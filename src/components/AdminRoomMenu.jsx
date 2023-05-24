@@ -4,7 +4,7 @@ import AdminRoomMiniCard from './AdminRoomMiniCard';
 import { useCookies } from "react-cookie";
 import AdminRoomFullCard from './AdminRoomFullCard';
 
-const AdminRoomMenu = ({role}) => {
+const AdminRoomMenu = ({role, jwt}) => {
     const [roomData, setRoomData] = useState([]);
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
     const [selectedRoom, setSelectedRoom] = useState(0);
@@ -16,7 +16,7 @@ const AdminRoomMenu = ({role}) => {
     },[isCreate,selectedRoom])
 
     async function loadRoomsData(){
-        await setRoomData(await RoomsRequests.getAllRooms(cookies?.token));
+        await setRoomData(await RoomsRequests.getAllRooms(jwt));
     }
 
 
@@ -30,7 +30,7 @@ const AdminRoomMenu = ({role}) => {
                     )}
                 </div>)
                 :
-                (<AdminRoomFullCard room={roomData.find(item=>item.id==selectedRoom)} isCreate={isCreate} setIsCreate={setIsCreate} setSelectedRoom={setSelectedRoom}/>)
+                (<AdminRoomFullCard jwt={jwt} room={roomData.find(item=>item.id==selectedRoom)} isCreate={isCreate} setIsCreate={setIsCreate} setSelectedRoom={setSelectedRoom}/>)
             }
         </div>
     );

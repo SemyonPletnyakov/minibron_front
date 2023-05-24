@@ -3,7 +3,7 @@ import { useCookies } from 'react-cookie';
 import AccountRequests from '../API/AccountRequests';
 import AccountsMiniCard from './AccountsMiniCard';
 
-const AccountsMenu = ({role}) => {
+const AccountsMenu = ({role, jwt}) => {
     const [usersData, setUsersData] = useState([]);
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
     const [isUpdated, setIsUpdated] = useState(false);
@@ -13,7 +13,7 @@ const AccountsMenu = ({role}) => {
     },[])
 
     async function loadData(){
-        let response= await AccountRequests.getAllUsers(cookies?.token)
+        let response= await AccountRequests.getAllUsers(jwt)
         await setUsersData(response.map(x=>({
             id: x.id,
             fio: x.fio,
@@ -38,7 +38,7 @@ const AccountsMenu = ({role}) => {
                                 isChange: false
                             },...usersData])}>Добавить</button>
                 {usersData.map((user, index)=>
-                    <AccountsMiniCard user={user} role={role} usersData={usersData} setUsersData={setUsersData} index={index} setIsUpdatedData={setIsUpdated} isUpdatedDate={isUpdated}/>
+                    <AccountsMiniCard jwt={jwt} user={user} role={role} usersData={usersData} setUsersData={setUsersData} index={index} setIsUpdatedData={setIsUpdated} isUpdatedDate={isUpdated}/>
                 )}
             </div>
             }

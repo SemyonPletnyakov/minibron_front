@@ -11,7 +11,7 @@ import "chart.js/auto";
 import { Bar } from 'react-chartjs-2';
 import StatisticsRequests from '../API/StatisticsRequests';
 
-const StatisticMenu = () => {
+const StatisticMenu = ({jwt}) => {
     const[startDateTime, setStartDateTime] = useState("");
     const[endDateTime, setEndDateTime] = useState("");
     const [selectedRange, setSelectedRange] = useState({});
@@ -38,21 +38,21 @@ const StatisticMenu = () => {
             response = await StatisticsRequests.getIncome(
                 moment(startDateTime, 'DD.MM.YYYY').format('YYYY-MM-DD'),
                 moment(endDateTime, 'DD.MM.YYYY').format('YYYY-MM-DD'),
-                cookies?.token
+                jwt
             )
 
         else if(staticticType == StatisticTypeEnum.NumberBooking) 
             response = await StatisticsRequests.getCountBookings(
                 moment(startDateTime, 'DD.MM.YYYY').format('YYYY-MM-DD'),
                 moment(endDateTime, 'DD.MM.YYYY').format('YYYY-MM-DD'),
-                cookies?.token
+                jwt
             )
 
         else if(staticticType == StatisticTypeEnum.NumberBookingRooms) 
             response = await StatisticsRequests.getCountBokingsRooms(
                 moment(startDateTime, 'DD.MM.YYYY').format('YYYY-MM-DD'),
                 moment(endDateTime, 'DD.MM.YYYY').format('YYYY-MM-DD'),
-                cookies?.token
+                jwt
             )
 
         

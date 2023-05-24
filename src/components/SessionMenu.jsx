@@ -4,7 +4,7 @@ import SessionRequests from '../API/SessionRequests';
 import SessionFullCard from './SessionFullCard';
 import SessionMiniCard from './SessionMiniCard';
 
-const SessionMenu = ({role}) => {
+const SessionMenu = ({role, jwt}) => {
     const [sessionData, setSessionData] = useState([]);
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
     const [selectedSession, setSelectedSession] = useState(0);
@@ -15,7 +15,7 @@ const SessionMenu = ({role}) => {
     },[isCreate,selectedSession])
 
     async function loadData(){
-        await setSessionData(await SessionRequests.getActual(cookies?.token));
+        await setSessionData(await SessionRequests.getActual(jwt));
     }
 
     return (
@@ -28,7 +28,7 @@ const SessionMenu = ({role}) => {
                     )}
                 </div>)
                 :
-                (<SessionFullCard session={sessionData.find(item=>item.id==selectedSession)} isCreate={isCreate} setIsCreate={setIsCreate} setSelectedSession={setSelectedSession}/>)
+                (<SessionFullCard jwt={jwt} session={sessionData.find(item=>item.id==selectedSession)} isCreate={isCreate} setIsCreate={setIsCreate} setSelectedSession={setSelectedSession}/>)
             }
         </div>
     );

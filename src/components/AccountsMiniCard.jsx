@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import AccountRequests from '../API/AccountRequests';
 
-const AccountsMiniCard = ({user,role,usersData,setUsersData, index, setIsUpdatedData,isUpdatedDate}) => {
+const AccountsMiniCard = ({user,role,usersData,setUsersData, index, setIsUpdatedData,isUpdatedDate, jwt}) => {
     const[updateUserView, setUpdateuserView] = useState(false);
     const [errorLogin, setErrorLogin] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
@@ -14,7 +14,7 @@ const AccountsMiniCard = ({user,role,usersData,setUsersData, index, setIsUpdated
             role:user.role,
             login:user.login,
             password:user.password
-        },cookies?.token);
+        },jwt);
         if(response>0){
             user.id=response;
             setErrorDelete(false);
@@ -31,7 +31,7 @@ const AccountsMiniCard = ({user,role,usersData,setUsersData, index, setIsUpdated
             role:user.role,
             login:user.login,
             password:user.password
-        },cookies?.token);
+        },jwt);
         if(response){
             setErrorDelete(false);
             setErrorLogin(false);
@@ -44,7 +44,7 @@ const AccountsMiniCard = ({user,role,usersData,setUsersData, index, setIsUpdated
         
         let response = await AccountRequests.deleteUser({
             id: user.id
-        },cookies?.token);
+        },jwt);
         
         if(response  || user.id==0){
             setErrorLogin(false);

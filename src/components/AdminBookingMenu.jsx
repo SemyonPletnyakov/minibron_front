@@ -4,7 +4,7 @@ import BookingsRequests from '../API/BookingsRequests';
 import AdminBookingFullCard from './AdminBookingFullCard';
 import AdminBookingMiniCard from './AdminBookingMiniCard';
 
-const AdminBookingMenu = ({role}) => {
+const AdminBookingMenu = ({role, jwt}) => {
     const [bookingData, setBookingData] = useState([]);
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
     const [selectedBooking, setSelectedBooking] = useState(0);
@@ -15,7 +15,7 @@ const AdminBookingMenu = ({role}) => {
     },[isCreate,selectedBooking])
 
     async function loadRoomsData(){
-        await setBookingData(await BookingsRequests.getActual(cookies?.token));
+        await setBookingData(await BookingsRequests.getActual(jwt));
     }
 
     return (
@@ -28,7 +28,7 @@ const AdminBookingMenu = ({role}) => {
                     )}
                 </div>)
                 :
-                (<AdminBookingFullCard booking={bookingData.find(item=>item.id==selectedBooking)} isCreate={isCreate} setIsCreate={setIsCreate} setSelectedBooking={setSelectedBooking}/>)
+                (<AdminBookingFullCard jwt={jwt} booking={bookingData.find(item=>item.id==selectedBooking)} isCreate={isCreate} setIsCreate={setIsCreate} setSelectedBooking={setSelectedBooking}/>)
             }
         </div>
     );
