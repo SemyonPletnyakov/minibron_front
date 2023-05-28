@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import globalHotelId from '..';
+import globalHotelId, { adminGlobalHotelId } from '..';
 import ServicesRequests from '../API/ServicesRequests';
 
 const AdminServicesFullCard = ({service, isCreate,setIsCreate, setSelectedService, jwt}) => {
@@ -11,7 +11,7 @@ const AdminServicesFullCard = ({service, isCreate,setIsCreate, setSelectedServic
     const[description, setDescription] = useState(!isCreate&& service!=null? service.description:"");
     const[price, setPrice] = useState(!isCreate&& service!=null? service.price: 0);
     const [_serviceId, setServiceId] = useState(!isCreate&& service!=null? service.id : 0);
-    const [imageSrc, setImageSrc] = useState(!isCreate&& service!=null? ServicesRequests.getPictureLink(globalHotelId,service.pictureName) : "");
+    const [imageSrc, setImageSrc] = useState(!isCreate&& service!=null? ServicesRequests.getPictureLink(adminGlobalHotelId,service.pictureName) : "");
     const [imageName, setImageName] = useState(!isCreate&& service!=null? service.pictureName : "");
     const [newFiles, setNewFiles] = useState([])
 

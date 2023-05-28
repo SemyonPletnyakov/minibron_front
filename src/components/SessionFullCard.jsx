@@ -8,7 +8,7 @@ import moment from 'moment/moment';
 import { format, isAfter, isBefore, isValid, parse } from 'date-fns';
 import { DayPicker, SelectRangeEventHandler} from 'react-day-picker';
 import { ru } from 'date-fns/locale'
-import globalHotelId from '..';
+import globalHotelId, { adminGlobalHotelId } from '..';
 
 const SessionFullCard = ({session,isCreate,setIsCreate,setSelectedSession, jwt}) => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
@@ -41,7 +41,7 @@ const SessionFullCard = ({session,isCreate,setIsCreate,setSelectedSession, jwt})
     },[])
 
     async function loadData(){
-        const serviceResult = await ServicesRequests.getAll(globalHotelId);
+        const serviceResult = await ServicesRequests.getAll(adminGlobalHotelId);
         setServicesData(serviceResult.map(x=>(
             {
                 id:x.id, 
@@ -122,7 +122,7 @@ const SessionFullCard = ({session,isCreate,setIsCreate,setSelectedSession, jwt})
             let dateCheck = await RoomsRequests.getActual(
                                 moment(startDateTime, 'DD.MM.YYYY').format('YYYY-MM-DD'),
                                 end,
-                                mainRoom.capacity,globalHotelId);
+                                mainRoom.capacity,adminGlobalHotelId);
                                 console.log(dateCheck.find(x=>x.id==roomId))
             if(!dateCheck.find(x=>x.id==roomId) || (typeof dateCheck.find(x=>x.id==roomId) == "undefined")){
                 setDateError(true);

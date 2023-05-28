@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import globalHotelId from '..';
+import globalHotelId, { adminGlobalHotelId } from '..';
 import RoomsRequests from '../API/RoomsRequests';
 
 const AdminRoomFullCard = ({room, isCreate, setIsCreate, setSelectedRoom, jwt}) => {
@@ -25,7 +25,7 @@ const AdminRoomFullCard = ({room, isCreate, setIsCreate, setSelectedRoom, jwt}) 
                 name:item.name,
                 numberOnTheList:item.numberOnTheList,
                 added:false,
-                url:RoomsRequests.getPictureLink(globalHotelId,_roomId,item.name)
+                url:RoomsRequests.getPictureLink(adminGlobalHotelId,_roomId,item.name)
             }))
         let t2 = response.sort( (a, b) => a.numberOnTheList - b.numberOnTheList ).map((item)=>(
             {
@@ -34,7 +34,7 @@ const AdminRoomFullCard = ({room, isCreate, setIsCreate, setSelectedRoom, jwt}) 
                 name:item.name,
                 numberOnTheList:item.numberOnTheList,
                 added:false,
-                url:RoomsRequests.getPictureLink(globalHotelId,_roomId,item.name)
+                url:RoomsRequests.getPictureLink(adminGlobalHotelId,_roomId,item.name)
             }))
         console.log(t1)
         setImageData(t1);

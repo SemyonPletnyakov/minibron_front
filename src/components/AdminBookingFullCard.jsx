@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import globalHotelId from '..';
+import globalHotelId, { adminGlobalHotelId } from '..';
 import RoomsRequests from '../API/RoomsRequests';
 import ServicesRequests from '../API/ServicesRequests';
 import 'react-day-picker/dist/style.css';
@@ -38,7 +38,7 @@ const AdminBookingFullCard = ({booking,isCreate,setIsCreate,setSelectedBooking, 
     },[])
 
     async function loadData(){
-        const serviceResult = await ServicesRequests.getAll(globalHotelId);
+        const serviceResult = await ServicesRequests.getAll(adminGlobalHotelId);
         setServicesData(serviceResult.map(x=>(
             {
                 id:x.id, 
@@ -72,7 +72,7 @@ const AdminBookingFullCard = ({booking,isCreate,setIsCreate,setSelectedBooking, 
                     if(servicesData[i].oldId>0 && !servicesData[i].action)
                         BookingsRequests.deleteBookingServiceById({id:servicesData[i].oldId}, jwt);
                     if(servicesData[i].oldId==0 && servicesData[i].action)
-                        await BookingsRequests.newBookingService(servicesData[i].id, bookingId, globalHotelId);
+                        await BookingsRequests.newBookingService(servicesData[i].id, bookingId, adminGlobalHotelId);
                 }
                
             }
@@ -81,7 +81,7 @@ const AdminBookingFullCard = ({booking,isCreate,setIsCreate,setSelectedBooking, 
             let dateCheck = await RoomsRequests.getActual(
                                 moment(startDateTime, 'DD.MM.YYYY').format('YYYY-MM-DD'),
                                 moment(endDateTime, 'DD.MM.YYYY').format('YYYY-MM-DD'),
-                                mainRoom.capacity,globalHotelId);
+                                mainRoom.capacity,adminGlobalHotelId);
             if(!dateCheck.find(x=>x.id==roomId) || (typeof dateCheck.find(x=>x.id==roomId) == "undefined")){
                 setDateError(true);
             }
@@ -89,11 +89,11 @@ const AdminBookingFullCard = ({booking,isCreate,setIsCreate,setSelectedBooking, 
                 response = await BookingsRequests.newBooking(
                                     moment(startDateTime, 'DD.MM.YYYY').format('YYYY-MM-DD'),
                                     moment(endDateTime, 'DD.MM.YYYY').format('YYYY-MM-DD'),
-                                    fio, phone, email, roomId, globalHotelId);
+                                    fio, phone, email, roomId, adminGlobalHotelId);
                 if(response>0){
                     for (let i = 0; i < servicesData.length; i++) {
                         if(servicesData[i].oldId==0 && servicesData[i].action)
-                            await BookingsRequests.newBookingService(servicesData[i].id, response, globalHotelId);
+                            await BookingsRequests.newBookingService(servicesData[i].id, response, adminGlobalHotelId);
                     }
                     setDateError(false);
                     setBookingId(response);
